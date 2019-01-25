@@ -14,7 +14,11 @@ class Barchart extends Frame {
     useColumn = _useColumn;
   }
 
-  void draw() {  }
+  void draw() {  
+  
+    println("window width: " + width);
+  
+  }
 
   void mousePressed() {  }
 
