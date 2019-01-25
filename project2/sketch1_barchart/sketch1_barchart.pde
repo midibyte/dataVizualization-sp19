@@ -2,13 +2,13 @@
 Table myTable = null;
 Frame myFrame = null;
 
-
+//get input file
 void setup(){
   size(600,600);  
   selectInput("Select a file to process:", "fileSelected");
 }
 
-
+//file open dialog, load into table object, create barchart with Barchart Class
 void fileSelected(File selection) {
   if (selection == null) {
     println("Window was closed or the user hit cancel.");
