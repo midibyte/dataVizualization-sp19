@@ -31,8 +31,8 @@ void draw(){
     return;
   
   if( myFrame != null ){
-       //myFrame.setPosition( 100, 100, width - 100, height - 100);
-       myFrame.setPosition(0,0, width, height);
+       myFrame.setPosition( 200, 300, 250, 100);
+       //myFrame.setPosition(0,0, width, height);
        
        //rect(200, 200, width - 300, height -300);
        //stroke(10);

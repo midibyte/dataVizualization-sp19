@@ -5,16 +5,16 @@ class Barchart extends Frame {
   Table data;        //Table Object
   String useColumn;  //column/bar titles
   int rows, displayCol;
-  float rowMin, rowMax;
+  float dataMin, dataMax;
 
   Barchart( Table _data, String _useColumn ) {
     data = _data;
     useColumn = _useColumn;              //will be label at bottom of chart
     rows = data.getRowCount();
     data.print();
-    println("frame(w, h, u0, v0)" + w +", " + h + ", " + u0 + ", " + v0);
     
-    displayCol = 1;
+    
+    displayCol = 2;
     
     ArrayList<Float> barData = new ArrayList<Float>();
     float[] barDataArray = data.getFloatColumn(displayCol);
@@ -29,9 +29,9 @@ class Barchart extends Frame {
     }
     
     //start at 0
-    rowMin = 0;
-    rowMax = Collections.max(barData);
-    rowMax = 9;
+    dataMin = 0;
+    dataMax = Collections.max(barData);
+    //dataMax = 9;
   }
   
   void setColumn( String _useColumn ){
@@ -42,31 +42,37 @@ class Barchart extends Frame {
   
   void draw() {  
     
+    //println("frame(w, h, u0, v0)" + w +", " + h + ", " + u0 + ", " + v0);
+    
+    fill (255, 100, 100, 100);
+    stroke(0);
+    rectMode(CORNER);
+    rect(u0, v0, w, h);
+    
+    
     //width of each bar - use window width
-    float barWidth = width / rows;
+    float barWidth = w / rows;
     //data column to use
     
     
     for (int i = 0; i < data.getRowCount(); i++){
-      
-      
-      
-      
-      
+
       //map: value, current_start, current_end, target_start, target_end
-      
-      float adjustedHeight = map( data.getFloat(i, displayCol) , rowMin, rowMax, 0, height);
+      //reverse target start and end
+      float adjustedHeight = map( data.getFloat( i, displayCol ), dataMin, dataMax, 0, h );
       
       //x, y, (top left) x, y (bottom right)
       
       
-      
-      rect(0 + (barWidth * i), height - adjustedHeight, barWidth, height);
       fill(100);
       stroke(0);
+      //rectMode(CORNERS);
+      //rect(u0 + (barWidth * i), adjustedHeight, u0 + (barWidth * i) + barWidth, h);
+      rect(u0 + (barWidth * i), v0+h - adjustedHeight, barWidth, adjustedHeight);
       
-      println("debug: " + "data val: " + data.getFloat(i, 1) + " adjH: " + adjustedHeight + " i: " + i);
-      println("displayCol: " + displayCol);
+      
+      //println("debug: " + "data val: " + data.getFloat(i, 1) + " adjH: " + adjustedHeight + " i: " + i);
+      //println("displayCol: " + displayCol);
       
     }
     
