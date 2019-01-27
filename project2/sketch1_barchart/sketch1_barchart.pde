@@ -8,6 +8,7 @@ Text legend = null;
 Axis x_axis = null;
 Axis y_axis = null;
 float displayFractionWidth, displayFractionHeight;
+String xLabelCol, displayDataCol;
 
 //get input file
 void setup(){
@@ -25,16 +26,22 @@ void fileSelected(File selection) {
   } else {
     println("User selected " + selection.getAbsolutePath());
     myTable = loadTable( selection.getAbsolutePath(), "header" );
-    myFrame = new Barchart( myTable, myTable.getColumnTitles()[1] );
     
-    //title from file name
+    //set data to display from the table
+    xLabelCol = myTable.getColumnTitles()[0];
+    displayDataCol = myTable.getColumnTitles()[2];
+    
+    myFrame = new Barchart( myTable, displayDataCol );
+    
+    //set title from file name
     title = new Text (selection.getName());
+    
     
     legend = new Text ("DEM, REP");
     
-    y_axis = new Axis( myTable, myTable.getColumnTitles()[1] );
+    y_axis = new Axis( myTable, displayDataCol );
     
-    x_axis = new Axis( myTable, myTable.getColumnTitles()[0] );
+    x_axis = new Axis( myTable, xLabelCol );
   }
 }
 
@@ -74,6 +81,7 @@ void draw(){
   if ( x_axis != null ){
     
     x_axis.setPosition( displayFractionWidth, displayFractionHeight * 7, displayFractionWidth * 6, displayFractionHeight);
+    //set to x axis for text
     x_axis.xAxis();
     //x_axis.highlightFrame();
     x_axis.draw();
