@@ -3,7 +3,7 @@
 class Barchart extends Frame {
 
   Table data;        //Table Object
-  String useColumn;  //column/bar titles
+  String useColumn;  //column to display along y axis
   int rows, displayCol;
   float dataMin, dataMax;
 
@@ -14,7 +14,8 @@ class Barchart extends Frame {
     data.print();
     
     
-    displayCol = 2;
+    //displayCol = 1;
+    displayCol = data.getColumnIndex(useColumn);
     
     ArrayList<Float> barData = new ArrayList<Float>();
     float[] barDataArray = data.getFloatColumn(displayCol);
