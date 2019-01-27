@@ -26,7 +26,8 @@ void fileSelected(File selection) {
     myTable = loadTable( selection.getAbsolutePath(), "header" );
     myFrame = new Barchart( myTable, myTable.getColumnTitles()[1] );
     
-    title = new Text ("Test Title");
+    //title from file name
+    title = new Text (selection.getName());
     
     legend = new Text ("DEM, REP");
     

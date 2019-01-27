@@ -22,6 +22,8 @@ class Axis extends Frame {
 
     //drawAtNumbers();
     drawDistributed();
+    drawAxisTitle();
+    
    
   }
   
@@ -49,7 +51,7 @@ class Axis extends Frame {
     //center of text box is the point given
     rectMode( CENTER );
     textAlign( RIGHT, CENTER );
-    textSize( 15 );
+    textSize( 16 );
     fill(0);
     
     for ( int i = 0; i <= numbers.length; i++ ){
@@ -64,5 +66,20 @@ class Axis extends Frame {
     }
     
     
+  }
+  void drawAxisTitle() {
+     //y axis
+     float x, y;
+     
+     x = u0 + w/4;
+     y = v0 + h/2;
+     textSize( 24 );
+     fill(0);
+     pushMatrix();
+     translate(x,y);
+     rotate(HALF_PI);
+     text(useColumn,0,0);
+     popMatrix();
+     
   }
 }
