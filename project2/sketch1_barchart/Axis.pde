@@ -19,13 +19,9 @@ class Axis extends Frame {
   void draw() {
     
     //outline frame boundary
-    
 
-
-    
-    
-    
-    drawAtNumbers();
+    //drawAtNumbers();
+    drawDistributed();
    
   }
   
@@ -46,5 +42,27 @@ class Axis extends Frame {
       text( text, u0 + w/2, new_h, w, h / numbers.length );
       
     }
+  }
+  
+  void drawDistributed() {
+    
+    //center of text box is the point given
+    rectMode( CENTER );
+    textAlign( RIGHT, CENTER );
+    textSize( 15 );
+    fill(0);
+    
+    for ( int i = 0; i <= numbers.length; i++ ){
+      
+      float increment = 1 / numbers.length;
+      float h_Increment = h / numbers.length;
+      String text = String.format( "%.2f -", ( (max / numbers.length) * i ) );
+      //String text = ( (max / numbers.length) * i ) + " -";
+      
+      text( text, u0 + w/2, v0 + h - ( h_Increment * i ), w, h / numbers.length );
+      
+    }
+    
+    
   }
 }
