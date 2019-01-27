@@ -3,6 +3,7 @@ import java.util.Collections;
 
 Table myTable = null;
 Frame myFrame = null;
+Text title = null;
 
 //get input file
 void setup(){
@@ -19,6 +20,8 @@ void fileSelected(File selection) {
     println("User selected " + selection.getAbsolutePath());
     myTable = loadTable( selection.getAbsolutePath(), "header" );
     myFrame = new Barchart( myTable, myTable.getColumnTitles()[0] );
+    
+    title = new Text ("Test Title");
     
   }
 }
@@ -39,6 +42,13 @@ void draw(){
        //fill(255, 255, 255, 255);
        
        myFrame.draw();
+  }
+  
+  if ( title != null ){
+    
+    title.setPosition( 0, 0, 800, 100 );
+    
+    title.draw();
   }
 }
 
