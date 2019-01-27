@@ -6,7 +6,7 @@ Frame myFrame = null;
 
 //get input file
 void setup(){
-  size(600,600);  
+  size(800,800);  
   selectInput("Select a file to process:", "fileSelected");
 }
 
@@ -31,8 +31,8 @@ void draw(){
     return;
   
   if( myFrame != null ){
-       //myFrame.setPosition( 200, 300, 250, 100);
-       myFrame.setPosition(0,0, width, height);
+       myFrame.setPosition( 0, 100, 800, 600 );
+       //myFrame.setPosition(0,0, width, height);
        
        //rect(200, 200, width - 300, height -300);
        //stroke(10);

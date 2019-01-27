@@ -44,11 +44,14 @@ class Barchart extends Frame {
     
     //println("frame(w, h, u0, v0)" + w +", " + h + ", " + u0 + ", " + v0);
     
-    fill (255, 100, 100, 100);
+    //outline frame boundary
+    //fill (255, 100, 100, 100);
+    noFill();
     stroke(0);
     rectMode(CORNER);
     rect(u0, v0, w, h);
     
+    String[] party = data.getStringColumn(3);
     
     //width of each bar - use window width
     float barWidth = w / rows;
@@ -62,12 +65,13 @@ class Barchart extends Frame {
       float adjustedHeight = map( data.getFloat( i, displayCol ), dataMin, dataMax, 0, h );
       
       //x, y, (top left) x, y (bottom right)
-      
-      
-      fill(100);
+      //use trim to trim whitespace
+      //println("party in col " + party[i] + "equals dem? " + party[i].trim().equals( "DEM" ) );
+      if ( party[i].trim().equals( "DEM" ) ) fill(0, 0, 255);
+      else fill (255, 0, 0);
+      //fill(100);
       stroke(0);
-      //rectMode(CORNERS);
-      //rect(u0 + (barWidth * i), adjustedHeight, u0 + (barWidth * i) + barWidth, h);
+      
       rect(u0 + (barWidth * i), v0+h - adjustedHeight, barWidth, adjustedHeight);
       
       
