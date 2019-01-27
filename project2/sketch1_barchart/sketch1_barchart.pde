@@ -6,6 +6,7 @@ Frame myFrame = null;
 Text title = null;
 Text legend = null;
 Axis x_axis = null;
+Axis y_axis = null;
 float displayFractionWidth, displayFractionHeight;
 
 //get input file
@@ -31,7 +32,9 @@ void fileSelected(File selection) {
     
     legend = new Text ("DEM, REP");
     
-    x_axis = new Axis( myTable, myTable.getColumnTitles()[1] );
+    y_axis = new Axis( myTable, myTable.getColumnTitles()[1] );
+    
+    x_axis = new Axis( myTable, myTable.getColumnTitles()[0] );
   }
 }
 
@@ -62,10 +65,17 @@ void draw(){
     title.draw();
   }
   
+  if ( y_axis != null ){
+    
+    y_axis.setPosition( 0, displayFractionHeight, displayFractionWidth, displayFractionHeight * 6);
+    y_axis.yAxis();
+    y_axis.draw();
+  }
   if ( x_axis != null ){
     
-    x_axis.setPosition( 0, displayFractionHeight, displayFractionWidth, displayFractionHeight * 6);
-    
+    x_axis.setPosition( displayFractionWidth, displayFractionHeight * 7, displayFractionWidth * 6, displayFractionHeight);
+    x_axis.xAxis();
+    //x_axis.highlightFrame();
     x_axis.draw();
   }
 }
@@ -105,6 +115,17 @@ abstract class Frame {
   void mousePressed(){ }
   void mouseReleased(){ }
   
+  void highlightFrame() {
+    
+    //draw a rectagle to highlight the frame to confirm its position
+    //outline frame boundary
+    fill (255, 100, 100, 100);
+    //noFill();
+    stroke(0);
+    rectMode(CORNER);
+    rect(u0, v0, w, h);
+    
+  }
   
   boolean mouseInside(){
      return (u0-clickBuffer < mouseX) && (u0+w+clickBuffer)>mouseX && (v0-clickBuffer)< mouseY && (v0+h+clickBuffer)>mouseY; 

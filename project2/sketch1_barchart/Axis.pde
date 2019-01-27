@@ -4,6 +4,7 @@ class Axis extends Frame {
   String useColumn; //column to use for the marks on the x axis
   float[] numbers;
   float max, min;
+  float rotateAmount = 0; //default rotate to x axis
   
   Axis ( Table _data, String _useColumn ) {
      data = _data;
@@ -18,13 +19,55 @@ class Axis extends Frame {
   
   void draw() {
     
-    //outline frame boundary
 
-    //drawAtNumbers();
-    drawDistributed();
-    drawAxisTitle();
+    if ( rotateAmount == 0 ) { 
+      drawAxisTitleX(); 
+      drawLabelsX(); 
+    }
     
-   
+    else {
+      
+      //drawAtNumbers();
+      drawDistributed();
+      drawAxisTitle();
+      
+    }
+  }
+  
+  void xAxis () {
+    rotateAmount = 0; 
+  }
+  
+  void yAxis () {
+    rotateAmount = HALF_PI; 
+  }
+  
+  void drawLabelsX() {
+    
+    //center of text box is the point given
+    rectMode( CENTER );
+    textAlign( CENTER , CENTER );
+    textSize( 16 );
+    fill(0);
+    
+    for ( int i = 0; i < numbers.length; i++ ){
+      
+      float x, y, textW, textH;
+      
+      x = u0 + ( w/ ( 2 * numbers.length ) ) + ( w / numbers.length ) * i;
+      y = v0 + h/4;
+      textW = w / numbers.length;
+      textH = h / 4;
+      
+      float offset = ( ( 1 / ( numbers.length * 2 ) ) * w );
+      String text = String.format( "%.0f", numbers[i] );
+      
+      text( text, x, y, textW, textH );
+      
+      println( "x: " + x + " i: " + i );
+      
+    }
+    
   }
   
   void drawAtNumbers() {
@@ -77,7 +120,23 @@ class Axis extends Frame {
      fill(0);
      pushMatrix();
      translate(x,y);
-     rotate(HALF_PI);
+     rotate(rotateAmount);
+     text(useColumn,0,0);
+     popMatrix();
+     
+  }
+  
+  void drawAxisTitleX() {
+     //x axis
+     float x, y;
+     
+     x = u0 + w/2;
+     y = v0 + ( h/4 * 3 );    //place at bottom quarter
+     textSize( 24 );
+     fill(0);
+     pushMatrix();
+     translate(x,y);
+     rotate(rotateAmount);
      text(useColumn,0,0);
      popMatrix();
      
