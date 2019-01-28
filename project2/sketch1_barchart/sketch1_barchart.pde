@@ -1,14 +1,17 @@
 import java.util.Arrays;
+import java.util.List;
 import java.util.Collections;
+import java.util.Set;
+import java.util.HashSet;
 
 Table myTable = null;
-Frame myFrame = null;
+Barchart chart = null;
 Text title = null;
 Text legend = null;
 Axis x_axis = null;
 Axis y_axis = null;
 float displayFractionWidth, displayFractionHeight;
-String xLabelCol, displayDataCol;
+String xLabelCol, displayDataCol, nameCol;
 
 //get input file
 void setup(){
@@ -30,8 +33,9 @@ void fileSelected(File selection) {
     //set data to display from the table
     xLabelCol = myTable.getColumnTitles()[0];
     displayDataCol = myTable.getColumnTitles()[2];
+    nameCol = myTable.getColumnTitles()[3];
     
-    myFrame = new Barchart( myTable, displayDataCol );
+    chart = new Barchart( myTable, displayDataCol );
     
     //set title from file name
     title = new Text (selection.getName());
@@ -52,17 +56,18 @@ void draw(){
   if( myTable == null ) 
     return;
   
-  if( myFrame != null ){
-       //myFrame.setPosition( 0, 100, 800, 600 );
-       //myFrame.setPosition( 0, height/8, width, height/8 * 6);
-       myFrame.setPosition( displayFractionWidth, displayFractionHeight, displayFractionWidth * 6, displayFractionHeight * 6);
-       //myFrame.setPosition(0,0, width, height);
-       
-       //rect(200, 200, width - 300, height -300);
-       //stroke(10);
-       //fill(255, 255, 255, 255);
-       
-       myFrame.draw();
+  if( chart != null ){
+
+       chart.setPosition( displayFractionWidth, displayFractionHeight, displayFractionWidth * 6, displayFractionHeight * 6);
+       //creates the point list used to place the labels
+       chart.setupPointList();  
+       //set colors for bars
+       chart.setColorsFromNames(nameCol);
+       //draws the bars
+       chart.draw();
+       //draw after to get labels on top, requires point list
+       chart.labelsBelowPoints();
+
   }
   
   if ( title != null ){
@@ -90,12 +95,12 @@ void draw(){
 
 
 void mousePressed(){
-  myFrame.mousePressed();
+  chart.mousePressed();
 }
 
 
 void mouseReleased(){
-  myFrame.mouseReleased();
+  chart.mouseReleased();
 }
 
 
