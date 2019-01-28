@@ -36,12 +36,18 @@ void fileSelected(File selection) {
     nameCol = myTable.getColumnTitles()[3];
     
     chart = new Barchart( myTable, displayDataCol );
+    chart.setPosition( displayFractionWidth, displayFractionHeight, displayFractionWidth * 6, displayFractionHeight * 6);
+    //creates the point list used to place the labels
+    chart.setupPointList();  
+    //set colors for bars
+    chart.setColorsFromNames(nameCol);
     
     //set title from file name
-    title = new Text (selection.getName());
+    title = new Text (selection.getName(), 0);
     
     
-    legend = new Text ("DEM, REP");
+    legend = new Text( chart.getUniqueNamesList(), 0);
+    legend.setTextColors( chart.getColorsList() );
     
     y_axis = new Axis( myTable, displayDataCol );
     
@@ -58,11 +64,8 @@ void draw(){
   
   if( chart != null ){
 
-       chart.setPosition( displayFractionWidth, displayFractionHeight, displayFractionWidth * 6, displayFractionHeight * 6);
-       //creates the point list used to place the labels
-       chart.setupPointList();  
-       //set colors for bars
-       chart.setColorsFromNames(nameCol);
+       
+       
        //draws the bars
        chart.draw();
        //draw after to get labels on top, requires point list
@@ -72,9 +75,17 @@ void draw(){
   
   if ( title != null ){
     
-    title.setPosition( 0, 0, 800, 100 );
+    title.setPosition( 0, 0, displayFractionWidth * 8, displayFractionHeight );
     
     title.draw();
+  }
+  
+  if ( legend != null ){
+    
+    legend.setPosition( displayFractionWidth * 7, displayFractionHeight, displayFractionWidth, displayFractionHeight * 6 );
+    //legend.highlightFrame();
+    //legend.printCurrentPosition();
+    legend.draw();
   }
   
   if ( y_axis != null ){
@@ -122,6 +133,12 @@ abstract class Frame {
     this.v0 = v0;
     this.w = w;
     this.h = h;
+  }
+  
+  void printCurrentPosition(){
+   
+    println( String.format( "u0:%f v0:%f w:%f h:%f", u0, v0, w, h ) );
+    
   }
   
   abstract void draw();

@@ -11,7 +11,8 @@ class Barchart extends Frame {
   Set<String> uniqueNames;
   ArrayList<Float> r, g, b;
   boolean colors = false;
-  ArrayList<String> uniqueNamesList =null;
+  ArrayList<String> uniqueNamesList = null;
+  ArrayList<Integer> rgb = null;
   
   Barchart( Table _data, String _useColumn ) {
     data = _data;
@@ -39,6 +40,14 @@ class Barchart extends Frame {
   
   void setColumn( String _useColumn ){
     useColumn = _useColumn;
+  }
+  
+  ArrayList<String> getUniqueNamesList(){
+   return uniqueNamesList; 
+  }
+  
+  ArrayList<Integer> getColorsList(){
+   return rgb; 
   }
   
   void labelsBelowPoints(){
@@ -118,7 +127,7 @@ class Barchart extends Frame {
       if (colors == true){
          //println(uniqueNamesList);
          int uniqueVal = uniqueNamesList.indexOf(names.get(i));
-         println(uniqueVal);
+         //println(uniqueVal);
          
          if (uniqueVal == -1) {
            //use generic color if no match
@@ -166,6 +175,7 @@ class Barchart extends Frame {
     r = new ArrayList<Float>();
     g = new ArrayList<Float>();
     b = new ArrayList<Float>();
+    rgb = new ArrayList<Integer>();
     
     //set colors for each name
     for (int i = 0; i < uniqueNames.size(); i++) {
@@ -174,6 +184,9 @@ class Barchart extends Frame {
       r.add(new Float(random(255)));
       g.add(new Float(random(255)));
       b.add(new Float(random(255)));
+      
+      rgb.add( color( r.get(i), g.get(i), b.get(i) ) );
+      
     }   
     
     
