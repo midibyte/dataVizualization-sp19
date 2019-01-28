@@ -1,15 +1,18 @@
 import java.util.Arrays;
+import java.util.List;
 import java.util.Collections;
+import java.util.Set;
+import java.util.HashSet;
 
 Table myTable = null;
-Frame myFrame = null;
 Text title = null;
 Text legend = null;
 Axis x_axis = null;
 Axis y_axis = null;
 Linechart chart = null;
+Labels pointLabels = null;
 float displayFractionWidth, displayFractionHeight;
-String xLabelCol, displayDataCol;
+String xLabelCol, displayDataCol, pointLabelCol;
 
 //get input file
 void setup(){
@@ -31,6 +34,7 @@ void fileSelected(File selection) {
     //set data to display from the table
     xLabelCol = myTable.getColumnTitles()[0];
     displayDataCol = myTable.getColumnTitles()[1];
+    pointLabelCol = myTable.getColumnTitles()[3];
     
     chart = new Linechart( myTable, displayDataCol );
     
@@ -43,6 +47,8 @@ void fileSelected(File selection) {
     y_axis = new Axis( myTable, displayDataCol );
     
     x_axis = new Axis( myTable, xLabelCol );
+    
+    //pointLabels = new Labels( myTable, displayDataCol, chart.getPointList() );
   }
 }
 
@@ -56,7 +62,9 @@ void draw(){
   //draw chart
   if( chart != null ){
        chart.setPosition( displayFractionWidth, displayFractionHeight, displayFractionWidth * 6, displayFractionHeight * 6);
-
+       //need to set position before setting up points
+       chart.setupPointList();
+       chart.labelsBelowPoints();
        //chart.highlightFrame();
 
        chart.drawBorder();
@@ -69,6 +77,11 @@ void draw(){
     
     title.draw();
   }
+  
+  //if ( pointLabels != null ){
+     
+  //  pointLabels.draw();
+  //}
   
   if ( y_axis != null ){
     
@@ -88,12 +101,12 @@ void draw(){
 
 
 void mousePressed(){
-  myFrame.mousePressed();
+  chart.mousePressed();
 }
 
 
 void mouseReleased(){
-  myFrame.mouseReleased();
+  chart.mouseReleased();
 }
 
 

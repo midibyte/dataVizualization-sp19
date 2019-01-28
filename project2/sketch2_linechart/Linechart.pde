@@ -34,6 +34,8 @@ class Linechart extends Frame {
     
   }
   
+  ArrayList<Point> getPointList() { return points; }
+  
   void setColumn( String _useColumn ){
     useColumn = _useColumn;
   }
@@ -41,7 +43,7 @@ class Linechart extends Frame {
   void draw() {
     
     //creates points from data
-    setupPointList();
+    
  
     for (int i = 1; i < points.size(); i++){
       Point p1 = points.get( i - 1);
@@ -52,6 +54,16 @@ class Linechart extends Frame {
       line( p1.x, p1.y, p2.x, p2.y );
       //need this to reset strokeweight for frame outline
       strokeWeight(1);
+      
+    }
+    
+    for (Point p: points){
+     
+      
+      fill(0);
+      ellipse(p.x, p.y, 8, 8);
+      //reset fill
+      noFill();
     }
     
   }
@@ -81,6 +93,27 @@ class Linechart extends Frame {
       //println("displayCol: " + displayCol);
       
     }
+
+  }
+  
+    void labelsBelowPoints(){
+   
+    //points are locations to draw labels
+    //get text and color info from use column
+    
+    for(int i = 0; i < points.size(); i++){
+     
+      
+      String temp = String.format( "%.2f", data.getFloatColumn(useColumn)[i] );
+      
+      textAlign(RIGHT, TOP);
+      textSize( 16 );
+      fill(0);
+      //stroke(1);
+      text( temp, points.get(i).x, points.get(i).y );
+      points.get(i).print();
+    }
+   
 
   }
 
