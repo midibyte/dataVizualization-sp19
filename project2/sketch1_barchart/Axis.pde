@@ -47,7 +47,7 @@ class Axis extends Frame {
     //center of text box is the point given
     rectMode( CENTER );
     textAlign( CENTER , CENTER );
-    textSize( 16 );
+    textSize( axisFontSize );
     fill(0);
     
     for ( int i = 0; i < numbers.length; i++ ){
@@ -71,7 +71,7 @@ class Axis extends Frame {
     //center of text box is the point given
     rectMode( CENTER );
     textAlign( RIGHT, CENTER );
-    textSize( 15 );
+    textSize( axisFontSize );
     fill(0);
     
     for ( int i = 0; i < numbers.length; i++ ){
@@ -91,7 +91,7 @@ class Axis extends Frame {
     //center of text box is the point given
     rectMode( CENTER );
     textAlign( RIGHT, CENTER );
-    textSize( 16 );
+    textSize( axisFontSize );
     fill(0);
     
     for ( int i = 0; i <= numbers.length; i++ ){
@@ -112,7 +112,7 @@ class Axis extends Frame {
      
      x = u0 + w/4;
      y = v0 + h/2;
-     textSize( 24 );
+     textSize( axisTitleFontSize );
      fill(0);
      pushMatrix();
      translate(x,y);
@@ -128,7 +128,7 @@ class Axis extends Frame {
      
      x = u0 + w/2;
      y = v0 + ( h/4 * 3 );    //place at bottom quarter
-     textSize( 24 );
+     textSize( axisTitleFontSize );
      fill(0);
      pushMatrix();
      translate(x,y);

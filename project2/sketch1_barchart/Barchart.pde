@@ -57,7 +57,7 @@ class Barchart extends Frame {
       String temp = String.format( "%.2f", data.getFloatColumn(useColumn)[i] );
       
       textAlign(CENTER, TOP);
-      textSize( 20 );
+      textSize( pointLabelFontSize );
       fill(255);
       text( temp, points.get(i).x, points.get(i).y );
     }
@@ -94,8 +94,6 @@ class Barchart extends Frame {
     stroke(0);
     rectMode(CORNER);
     rect(u0, v0, w, h);
-    
-    String[] party = data.getStringColumn(3);
     
     //width of each bar - use window width
     float barWidth = w / rows;

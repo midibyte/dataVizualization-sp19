@@ -79,7 +79,7 @@ class Linechart extends Frame {
         fill( rgb.get( uniqueNamesList.indexOf( names.get(i) ) ) );
       }
       
-      ellipse(p.x, p.y, 24, 24);
+      ellipse(p.x, p.y, pointSize, pointSize);
       //reset fill
       noFill();
     }
@@ -116,9 +116,9 @@ class Linechart extends Frame {
       String temp = String.format( "%.2f", data.getFloatColumn(useColumn)[i] );
       
       textAlign(RIGHT, TOP);
-      textSize( 24 );
+      textSize( pointLabelFontSize );
       fill(0);
-      text( temp, points.get(i).x + 12, points.get(i).y + 12);
+      text( temp, points.get(i).x + pointLabelFontSize, points.get(i).y + pointLabelFontSize);
     }
    
 

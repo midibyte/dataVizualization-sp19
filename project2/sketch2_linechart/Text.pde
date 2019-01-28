@@ -24,7 +24,7 @@ class Text extends Frame {
     if(uniqueNamesList == null){
       rectMode( CENTER );
       //fill( 255 );
-      textSize( 32 );
+      textSize( titleFontSize );
       fill(0, 102, 153, 204);
       textAlign( CENTER, CENTER );    
       pushMatrix();
@@ -41,7 +41,7 @@ class Text extends Frame {
   
   void textFromList(){
     
-    float textSize = 24;
+    float textSize = subtitleFontSize;
     float textOffset = textSize;
     rectMode( CENTER );
     textAlign( CENTER, CENTER );

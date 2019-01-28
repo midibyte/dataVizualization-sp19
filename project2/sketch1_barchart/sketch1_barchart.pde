@@ -15,7 +15,7 @@ String xLabelCol, displayDataCol, nameCol;
 
 //get input file
 void setup(){
-  size(800,800);
+  size(600,600);
   //fractions to determine placement of frames
   displayFractionWidth = width/8;
   displayFractionHeight = height/8;
@@ -118,7 +118,14 @@ abstract class Frame {
   
   float u0,v0,w,h;
   int clickBuffer = 2;
-     
+  //set sizes here
+  int axisFontSize = 14;
+  int axisTitleFontSize = 16;
+  int titleFontSize = 32;
+  int subtitleFontSize = 16;
+  int pointLabelFontSize = 16;
+  int pointSize = 16;
+  
   void setPosition( int u0, int v0, int w, int h ){
     this.u0 = u0;
     this.v0 = v0;
