@@ -7,6 +7,7 @@ Text title = null;
 Text legend = null;
 Axis x_axis = null;
 Axis y_axis = null;
+Linechart chart = null;
 float displayFractionWidth, displayFractionHeight;
 String xLabelCol, displayDataCol;
 
@@ -29,9 +30,9 @@ void fileSelected(File selection) {
     
     //set data to display from the table
     xLabelCol = myTable.getColumnTitles()[0];
-    displayDataCol = myTable.getColumnTitles()[2];
+    displayDataCol = myTable.getColumnTitles()[1];
     
-    //myFrame = new Barchart( myTable, displayDataCol );
+    chart = new Linechart( myTable, displayDataCol );
     
     //set title from file name
     title = new Text (selection.getName());
@@ -52,17 +53,14 @@ void draw(){
   if( myTable == null ) 
     return;
   
-  if( myFrame != null ){
-       //myFrame.setPosition( 0, 100, 800, 600 );
-       //myFrame.setPosition( 0, height/8, width, height/8 * 6);
-       myFrame.setPosition( displayFractionWidth, displayFractionHeight, displayFractionWidth * 6, displayFractionHeight * 6);
-       //myFrame.setPosition(0,0, width, height);
-       
-       //rect(200, 200, width - 300, height -300);
-       //stroke(10);
-       //fill(255, 255, 255, 255);
-       
-       myFrame.draw();
+  //draw chart
+  if( chart != null ){
+       chart.setPosition( displayFractionWidth, displayFractionHeight, displayFractionWidth * 6, displayFractionHeight * 6);
+
+       //chart.highlightFrame();
+
+       chart.drawBorder();
+       chart.draw();
   }
   
   if ( title != null ){
@@ -133,6 +131,15 @@ abstract class Frame {
     rectMode(CORNER);
     rect(u0, v0, w, h);
     
+  }
+  
+  void drawBorder() {
+   
+    noFill();
+    stroke(0);
+    strokeWeight(1);
+    rectMode(CORNER);
+    rect(u0, v0, w, h);
   }
   
   boolean mouseInside(){

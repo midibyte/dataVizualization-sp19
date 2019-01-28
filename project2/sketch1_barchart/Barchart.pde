@@ -12,10 +12,7 @@ class Barchart extends Frame {
     useColumn = _useColumn;              //will be label at bottom of chart
     rows = data.getRowCount();
     data.print();
-    
-    
-    //displayCol = 1;
-    displayCol = data.getColumnIndex(useColumn);
+    displayCol = data.getColumnIndex(useColumn);  //column number to use for bars
     
     ArrayList<Float> barData = new ArrayList<Float>();
     float[] barDataArray = data.getFloatColumn(displayCol);
