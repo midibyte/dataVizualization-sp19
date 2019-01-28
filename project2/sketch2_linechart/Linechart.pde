@@ -7,6 +7,11 @@ class Linechart extends Frame {
   int rows, displayCol;
   float dataMin, dataMax;
   ArrayList<Point> points = null;
+  List<String> names;
+
+  boolean colors = false;
+  ArrayList<String> uniqueNamesList = null;
+  ArrayList<Integer> rgb = null;
 
   Linechart( Table _data, String _useColumn ) {
     data = _data;
@@ -39,6 +44,14 @@ class Linechart extends Frame {
   void setColumn( String _useColumn ){
     useColumn = _useColumn;
   }
+  
+  ArrayList<String> getUniqueNamesList(){
+   return uniqueNamesList; 
+  }
+  
+  ArrayList<Integer> getColorsList(){
+   return rgb; 
+  }
 
   void draw() {
     
@@ -57,11 +70,24 @@ class Linechart extends Frame {
       
     }
     
-    for (Point p: points){
-     
+    drawPoints();
+    
+  }
+  
+  void drawPoints(){
+   
+    for (int i = 0; i< points.size(); i++){
       
-      fill(0);
-      ellipse(p.x, p.y, 8, 8);
+      Point p = points.get(i);
+      if (colors == false ) fill(0);
+      
+      else{
+       
+        fill( rgb.get( uniqueNamesList.indexOf( names.get(i) ) ) );
+        
+      }
+      
+      ellipse(p.x, p.y, 24, 24);
       //reset fill
       noFill();
     }
@@ -96,7 +122,7 @@ class Linechart extends Frame {
 
   }
   
-    void labelsBelowPoints(){
+  void labelsBelowPoints(){
    
     //points are locations to draw labels
     //get text and color info from use column
@@ -107,14 +133,41 @@ class Linechart extends Frame {
       String temp = String.format( "%.2f", data.getFloatColumn(useColumn)[i] );
       
       textAlign(RIGHT, TOP);
-      textSize( 16 );
+      textSize( 24 );
       fill(0);
       //stroke(1);
-      text( temp, points.get(i).x, points.get(i).y );
-      points.get(i).print();
+      text( temp, points.get(i).x + 12, points.get(i).y + 12);
+      //points.get(i).print();
     }
    
 
+  }
+  
+  void setColorsFromNames(String colorCol){
+    
+    Set<String> uniqueNames;
+    ArrayList<Float> r, g, b;
+    //only set once to prevent changing every time draw is called
+    if (colors == true) return;
+    colors = true;
+    //get name strings, then get unique only, then convert to list to use later with index
+    names = Arrays.asList(data.getStringColumn(colorCol));
+    uniqueNames = new HashSet<String>(names);
+    uniqueNamesList = new ArrayList<String>();
+    uniqueNamesList.addAll(uniqueNames);
+
+    rgb = new ArrayList<Integer>();
+    
+    //set colors for each name
+    for (int i = 0; i < uniqueNames.size(); i++) {
+     
+      //add a random color for each unique name
+      
+      rgb.add( color( random(255), random(255), random(255) ) );
+      
+    }   
+    
+    
   }
 
   void mousePressed() {  }

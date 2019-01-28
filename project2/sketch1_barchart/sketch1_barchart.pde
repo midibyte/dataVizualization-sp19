@@ -46,7 +46,7 @@ void fileSelected(File selection) {
     title = new Text (selection.getName(), 0);
     
     
-    legend = new Text( chart.getUniqueNamesList(), 0);
+    legend = new Text(myTable.getColumnTitles()[3].trim(), chart.getUniqueNamesList(), 0);
     legend.setTextColors( chart.getColorsList() );
     
     y_axis = new Axis( myTable, displayDataCol );

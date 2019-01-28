@@ -1,6 +1,6 @@
 class Text extends Frame {
    
-  String displayText;
+  String displayText, title;
   float rotationVal;
   boolean colors = false;
   ArrayList<String> uniqueNamesList = null;
@@ -13,16 +13,15 @@ class Text extends Frame {
     rotationVal = _rotationVal;
   }
   
-  Text (ArrayList<String> _uniqueNamesList, float _rotationVal ){
-     
+  Text (String _title, ArrayList<String> _uniqueNamesList, float _rotationVal ){
+    title = _title;
     uniqueNamesList = _uniqueNamesList;
     rotationVal = _rotationVal;
   }
   
   void draw(){
-     
-    
-    
+
+    //just prints a string
     if(uniqueNamesList == null){
       rectMode( CENTER );
       fill( 255 );
@@ -39,18 +38,24 @@ class Text extends Frame {
       textFromList();
     }
     
-    
-    
   }
   
   void textFromList(){
     
-    float textSize = 32;
-    float textOffset =textSize;
+    float textSize = 24;
+    float textOffset = textSize;
+    textAlign( CENTER, CENTER );
+    fill(0, 102, 153, 204);
+    textSize( textSize );
+    pushMatrix();
+    translate( u0 + (w/2), v0 + textOffset );
+    text(title, 0, 0, w, h );
+    popMatrix();
+    textOffset += textSize;
     
     for (int i = 0; i < uniqueNamesList.size(); i++){
       rectMode( CENTER );
-      fill( 255 );
+      
       textSize( textSize );
       
       

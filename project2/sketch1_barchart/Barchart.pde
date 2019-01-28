@@ -147,17 +147,9 @@ class Barchart extends Frame {
         stroke(0);
       }
       
-      
       rect(u0 + (barWidth * i), v0+h - adjustedHeight, barWidth, adjustedHeight);
       
-      
-      //println("debug: " + "data val: " + data.getFloat(i, 1) + " adjH: " + adjustedHeight + " i: " + i);
-      //println("displayCol: " + displayCol);
-      
     }
-    
-    //convert max and min from data to fit in window
-   
   
   }
 

@@ -38,11 +38,18 @@ void fileSelected(File selection) {
     
     chart = new Linechart( myTable, displayDataCol );
     
+    chart.setPosition( displayFractionWidth, displayFractionHeight, displayFractionWidth * 6, displayFractionHeight * 6);
+    //need to set position before setting up points
+    chart.setupPointList();
+    chart.setColorsFromNames(pointLabelCol);
+    
+    
     //set title from file name
-    title = new Text (selection.getName());
+    title = new Text (selection.getName(), 0);
     
     
-    legend = new Text ("DEM, REP");
+    legend = new Text(myTable.getColumnTitles()[3].trim(), chart.getUniqueNamesList(), 0);
+    legend.setTextColors( chart.getColorsList() );
     
     y_axis = new Axis( myTable, displayDataCol );
     
@@ -61,19 +68,16 @@ void draw(){
   
   //draw chart
   if( chart != null ){
-       chart.setPosition( displayFractionWidth, displayFractionHeight, displayFractionWidth * 6, displayFractionHeight * 6);
-       //need to set position before setting up points
-       chart.setupPointList();
-       chart.labelsBelowPoints();
-       //chart.highlightFrame();
 
+       //chart.highlightFrame();
+       chart.labelsBelowPoints();
        chart.drawBorder();
        chart.draw();
   }
   
   if ( title != null ){
     
-    title.setPosition( 0, 0, 800, 100 );
+    title.setPosition( 0, 0, displayFractionWidth * 8, displayFractionHeight );
     
     title.draw();
   }
@@ -97,6 +101,15 @@ void draw(){
     //x_axis.highlightFrame();
     x_axis.draw();
   }
+  
+  if ( legend != null ){
+    
+    legend.setPosition( displayFractionWidth * 7, displayFractionHeight, displayFractionWidth, displayFractionHeight * 6 );
+    //legend.highlightFrame();
+    //legend.printCurrentPosition();
+    legend.draw();
+  }
+  
 }
 
 
