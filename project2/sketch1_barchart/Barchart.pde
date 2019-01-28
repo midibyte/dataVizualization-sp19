@@ -25,12 +25,8 @@ class Barchart extends Frame {
     float[] barDataArray = data.getFloatColumn(displayCol);
     
     //convert to arraylist to get max
-    
     for ( int i = 0; i< barDataArray.length; i++){
-      //
-      
       barData.add(barDataArray[i]);
-      
     }
     
     //start at 0
@@ -63,9 +59,7 @@ class Barchart extends Frame {
       textAlign(CENTER, TOP);
       textSize( 20 );
       fill(255);
-      //stroke(1);
       text( temp, points.get(i).x, points.get(i).y );
-      //points.get(i).print();
     }
    
 
@@ -89,18 +83,12 @@ class Barchart extends Frame {
       //add point to point list
       Point temp = new Point( (barWidth/2) + u0 + ( barWidth * i ), v0 + h - adjustedHeight );
       points.add( temp );
-      //temp.print();
-      
-      //println("debug: " + "data val: " + data.getFloat(i, displayCol) + " adjH: " + adjustedHeight + " u0 " + u0 + " v0 " + v0 + " i: " + i);
-      //println("displayCol: " + displayCol);
       
     }
 
   }
   
   void draw() {  
-    
-    //println("frame(w, h, u0, v0)" + w +", " + h + ", " + u0 + ", " + v0);
     
     noFill();
     stroke(0);
@@ -120,10 +108,6 @@ class Barchart extends Frame {
       //reverse target start and end
       float adjustedHeight = map( data.getFloat( i, displayCol ), dataMin, dataMax, 0, h );
       
-      //x, y, (top left) x, y (bottom right)
-      //use trim to trim whitespace
-      //println("party in col " + party[i] + "equals dem? " + party[i].trim().equals( "DEM" ) );
-      
       if (colors == true){
          //println(uniqueNamesList);
          int uniqueVal = uniqueNamesList.indexOf(names.get(i));
@@ -132,8 +116,7 @@ class Barchart extends Frame {
          if (uniqueVal == -1) {
            //use generic color if no match
            fill(100);
-           noStroke();
-           
+           noStroke(); 
          }
          
          //fill with color unique to the name
@@ -141,9 +124,7 @@ class Barchart extends Frame {
          
       }
       else {
-        if ( party[i].trim().equals( "DEM" ) ) fill(0, 0, 255);
-        else fill (255, 0, 0);
-        //fill(100);
+        fill(100);
         stroke(0);
       }
       
@@ -176,7 +157,7 @@ class Barchart extends Frame {
       r.add(new Float(random(255)));
       g.add(new Float(random(255)));
       b.add(new Float(random(255)));
-      
+
       rgb.add( color( r.get(i), g.get(i), b.get(i) ) );
       
     }   

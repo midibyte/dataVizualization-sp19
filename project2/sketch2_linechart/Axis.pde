@@ -18,7 +18,6 @@ class Axis extends Frame {
   }
   
   void draw() {
-    
 
     if ( rotateAmount == 0 ) { 
       drawAxisTitleX(); 
@@ -26,11 +25,8 @@ class Axis extends Frame {
     }
     
     else {
-      
-      //drawAtNumbers();
       drawDistributed();
       drawAxisTitle();
-      
     }
   }
   
@@ -58,16 +54,12 @@ class Axis extends Frame {
       y = v0 + h/4;
       textW = w / numbers.length;
       textH = h / 4;
-      
-      float offset = ( ( 1 / ( numbers.length * 2 ) ) * w );
+
       String text = String.format( "%.0f", numbers[i] );
       
       text( text, x, y, textW, textH );
       
-      //println( "x: " + x + " i: " + i );
-      
-    }
-    
+    }  
   }
   
   void drawAtNumbers() {
@@ -102,7 +94,6 @@ class Axis extends Frame {
       float increment = 1 / numbers.length;
       float h_Increment = h / numbers.length;
       String text = String.format( "%.2f -", ( (max / numbers.length) * i ) );
-      //String text = ( (max / numbers.length) * i ) + " -";
       
       text( text, u0 + w/2, v0 + h - ( h_Increment * i ), w, h / numbers.length );
       

@@ -16,6 +16,7 @@ String xLabelCol, displayDataCol, nameCol;
 //get input file
 void setup(){
   size(800,800);
+  //fractions to determine placement of frames
   displayFractionWidth = width/8;
   displayFractionHeight = height/8;
   selectInput("Select a file to process:", "fileSelected");
@@ -83,8 +84,6 @@ void draw(){
   if ( legend != null ){
     
     legend.setPosition( displayFractionWidth * 7, displayFractionHeight, displayFractionWidth, displayFractionHeight * 6 );
-    //legend.highlightFrame();
-    //legend.printCurrentPosition();
     legend.draw();
   }
   
@@ -99,7 +98,6 @@ void draw(){
     x_axis.setPosition( displayFractionWidth, displayFractionHeight * 7, displayFractionWidth * 6, displayFractionHeight);
     //set to x axis for text
     x_axis.xAxis();
-    //x_axis.highlightFrame();
     x_axis.draw();
   }
 }
@@ -148,9 +146,7 @@ abstract class Frame {
   void highlightFrame() {
     
     //draw a rectagle to highlight the frame to confirm its position
-    //outline frame boundary
     fill (255, 100, 100, 100);
-    //noFill();
     stroke(0);
     rectMode(CORNER);
     rect(u0, v0, w, h);

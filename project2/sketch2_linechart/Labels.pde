@@ -44,7 +44,6 @@ public class Labels{
     
     for(int i = 0; i < points.size(); i++){
      
-      
       String temp = String.format( "%.2f", data.getFloatColumn(useColumn)[i] );
       
       textAlign(RIGHT, BOTTOM);
@@ -59,8 +58,7 @@ public class Labels{
   }
 
   void draw(){
-    
-   
+
     labelsBelowPoints();
     
   }

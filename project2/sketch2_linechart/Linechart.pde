@@ -26,17 +26,13 @@ class Linechart extends Frame {
     //convert to arraylist to get max
     
     for ( int i = 0; i< barDataArray.length; i++){
-
-      barData.add(barDataArray[i]);
-      
+      barData.add(barDataArray[i]); 
     }
     
     //start at 0
     dataMin = 0;
     dataMax = Collections.max(barData);
 
-
-    
   }
   
   ArrayList<Point> getPointList() { return points; }
@@ -56,8 +52,6 @@ class Linechart extends Frame {
   void draw() {
     
     //creates points from data
-    
- 
     for (int i = 1; i < points.size(); i++){
       Point p1 = points.get( i - 1);
       Point p2 = points.get( i );
@@ -82,9 +76,7 @@ class Linechart extends Frame {
       if (colors == false ) fill(0);
       
       else{
-       
         fill( rgb.get( uniqueNamesList.indexOf( names.get(i) ) ) );
-        
       }
       
       ellipse(p.x, p.y, 24, 24);
@@ -97,8 +89,6 @@ class Linechart extends Frame {
   void setupPointList() {  
 
     points = new ArrayList<Point>();
-    
-    //String[] party = data.getStringColumn(3);
     
     //width of each bar - use window width
     float barWidth = w / rows;
@@ -113,31 +103,22 @@ class Linechart extends Frame {
       //add point to point list
       Point temp = new Point( (barWidth/2) + u0 + ( barWidth * i ), v0 + h - adjustedHeight );
       points.add( temp );
-      //temp.print();
-      
-      //println("debug: " + "data val: " + data.getFloat(i, displayCol) + " adjH: " + adjustedHeight + " u0 " + u0 + " v0 " + v0 + " i: " + i);
-      //println("displayCol: " + displayCol);
-      
-    }
 
+    }
   }
   
   void labelsBelowPoints(){
-   
     //points are locations to draw labels
     //get text and color info from use column
     
     for(int i = 0; i < points.size(); i++){
-     
-      
+
       String temp = String.format( "%.2f", data.getFloatColumn(useColumn)[i] );
       
       textAlign(RIGHT, TOP);
       textSize( 24 );
       fill(0);
-      //stroke(1);
       text( temp, points.get(i).x + 12, points.get(i).y + 12);
-      //points.get(i).print();
     }
    
 
@@ -162,7 +143,6 @@ class Linechart extends Frame {
     for (int i = 0; i < uniqueNames.size(); i++) {
      
       //add a random color for each unique name
-      
       rgb.add( color( random(255), random(255), random(255) ) );
       
     }   

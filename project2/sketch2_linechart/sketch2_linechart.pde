@@ -52,10 +52,8 @@ void fileSelected(File selection) {
     legend.setTextColors( chart.getColorsList() );
     
     y_axis = new Axis( myTable, displayDataCol );
-    
     x_axis = new Axis( myTable, xLabelCol );
-    
-    //pointLabels = new Labels( myTable, displayDataCol, chart.getPointList() );
+
   }
 }
 
@@ -69,7 +67,6 @@ void draw(){
   //draw chart
   if( chart != null ){
 
-       //chart.highlightFrame();
        chart.labelsBelowPoints();
        chart.drawBorder();
        chart.draw();
@@ -82,11 +79,6 @@ void draw(){
     title.draw();
   }
   
-  //if ( pointLabels != null ){
-     
-  //  pointLabels.draw();
-  //}
-  
   if ( y_axis != null ){
     
     y_axis.setPosition( 0, displayFractionHeight, displayFractionWidth, displayFractionHeight * 6);
@@ -98,15 +90,12 @@ void draw(){
     x_axis.setPosition( displayFractionWidth, displayFractionHeight * 7, displayFractionWidth * 6, displayFractionHeight);
     //set to x axis for text
     x_axis.xAxis();
-    //x_axis.highlightFrame();
     x_axis.draw();
   }
   
   if ( legend != null ){
     
     legend.setPosition( displayFractionWidth * 7, displayFractionHeight, displayFractionWidth, displayFractionHeight * 6 );
-    //legend.highlightFrame();
-    //legend.printCurrentPosition();
     legend.draw();
   }
   
@@ -150,7 +139,6 @@ abstract class Frame {
   void highlightFrame() {
     
     //draw a rectagle to highlight the frame to confirm its position
-    //outline frame boundary
     fill (255, 100, 100, 100);
     //noFill();
     stroke(0);

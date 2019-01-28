@@ -20,9 +20,7 @@ class Text extends Frame {
   }
   
   void draw(){
-     
-    
-    
+
     if(uniqueNamesList == null){
       rectMode( CENTER );
       //fill( 255 );
@@ -38,9 +36,7 @@ class Text extends Frame {
     else{
       textFromList();
     }
-    
-    
-    
+
   }
   
   void textFromList(){
@@ -61,7 +57,6 @@ class Text extends Frame {
       rectMode( CENTER );
       
       textSize( textSize );
-      
       
       if (colors == false) fill(0, 102, 153, 204);
       
