@@ -10,10 +10,11 @@ class Axis extends Frame {
      data = _data;
      useColumn = _useColumn;
      numbers = data.getFloatColumn(useColumn);
-     println(numbers);
+     //println(numbers);
      Arrays.sort(numbers);
      min = 0.0;
      max = numbers[numbers.length - 1];
+     println(min);
      println(max);
   }
   
@@ -21,13 +22,24 @@ class Axis extends Frame {
 
     if ( rotateAmount == 0 ) { 
       drawAxisTitleX(); 
-      drawLabelsX(); 
+      //drawLabelsX(); 
     }
     
     else {
-      drawDistributed();
+      //drawDistributed();
       drawAxisTitle();
     }
+  }
+  
+  void setCol(String _useColumn){
+    useColumn = _useColumn;
+    numbers = data.getFloatColumn(useColumn);
+     //println(numbers);
+     Arrays.sort(numbers);
+     min = 0.0;
+     max = numbers[numbers.length - 1];
+     println(min);
+     println(max);
   }
   
   void xAxis () {
@@ -37,6 +49,8 @@ class Axis extends Frame {
   void yAxis () {
     rotateAmount = HALF_PI; 
   }
+  
+  
   
   void drawLabelsX() {
     
@@ -81,7 +95,8 @@ class Axis extends Frame {
     }
   }
   
-  void drawDistributed() {
+  //draw all the numbers from the column along the y axis
+  void drawDistributedAll() {
     
     //center of text box is the point given
     rectMode( CENTER );
@@ -91,7 +106,6 @@ class Axis extends Frame {
     
     for ( int i = 0; i <= numbers.length; i++ ){
       
-      float increment = 1 / numbers.length;
       float h_Increment = h / numbers.length;
       String text = String.format( "%.2f -", ( (max / numbers.length) * i ) );
       
@@ -99,6 +113,68 @@ class Axis extends Frame {
       
     }
     
+    
+  }
+  
+  //draw count numbers along the y axis from min to max
+  void drawDistributedY(int count) {
+    //adjust count so that the correct number of markings will show
+    count -= 1;
+    //center of text box is the point given
+    rectMode( CENTER );
+    textAlign( LEFT, CENTER );
+    textSize( axisFontSize );
+    fill(0);
+    
+    float interval = h / count;
+    float yPos = v0 + h;  //set starting  y coord
+    float displayNum = min;
+    
+    for (int i = 0; i <= count; i++ ){
+     
+      
+      String text = String.format("%.2f", displayNum);
+      
+      //draw text with room for axis  lines
+      text( text, u0 + w/2, yPos, (w/2) - axisFontSize, h / count );
+      
+      line(u0 + w, yPos, u0 + w - axisFontSize, yPos);
+      
+      //update yPos
+      yPos -= interval;
+      displayNum += (max / count);
+      
+    }
+    
+  }
+  
+  //draw count numbers along the x axis from min to max
+  void drawDistributedX(int count) {
+    //adjust count so that the correct number of markings will show
+    count -= 1;
+    //center of text box is the point given
+    rectMode( CENTER );
+    textAlign( CENTER, CENTER );
+    textSize( axisFontSize );
+    fill(0);
+    
+    float interval = w / count;
+    float xPos = u0;  //set starting  x coord
+    float displayNum = min;
+    
+    for (int i = 0; i <= count; i++ ){
+     
+      
+      String text = String.format("%.2f", displayNum);
+      text( text, xPos, v0 + h/4, w, h / count );
+      
+      line( xPos, v0 + h/4 - axisFontSize, xPos, v0);
+      
+      //update xPos
+      xPos += interval;
+      displayNum += (max / count);
+      
+    }
     
   }
   void drawAxisTitle() {
@@ -112,6 +188,7 @@ class Axis extends Frame {
      pushMatrix();
      translate(x,y);
      rotate(rotateAmount);
+     textAlign(CENTER, CENTER);
      text(useColumn,0,0);
      popMatrix();
      
@@ -128,6 +205,7 @@ class Axis extends Frame {
      pushMatrix();
      translate(x,y);
      rotate(rotateAmount);
+     textAlign(CENTER, CENTER);
      text(useColumn,0,0);
      popMatrix();
      

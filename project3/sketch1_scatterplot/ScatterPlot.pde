@@ -53,15 +53,17 @@ public class ScatterPlot extends Frame{
   
   
   void draw(){
-   
-    for (Point p: points){
-     
-      fill(0);
-      stroke(0);
-      ellipse(p.x, p.y, 6, 6);
-      
-    }
     
+    if (points != null){
+      for (Point p: points){
+       
+        fill(0);
+        stroke(0);
+        ellipse(p.x, p.y, 6, 6);
+        
+      }
+    
+  }
   }
   
 }
