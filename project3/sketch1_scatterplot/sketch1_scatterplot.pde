@@ -2,7 +2,7 @@ import java.util.Arrays;
 import java.util.List;
 
 Table myTable = null;
-Frame myFrame = null;
+
 ScatterPlot scatter = null;
 Axis yAxis = null;
 Axis xAxis = null;
