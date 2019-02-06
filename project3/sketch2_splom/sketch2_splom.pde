@@ -3,17 +3,19 @@ import java.util.List;
 
 Table myTable = null;
 
+//lists to hold each scatter plot cell, legend, and axis markings
 ArrayList<ScatterPlot> scatterPlots = null;
 ArrayList<Axis> xAxes = null;
 ArrayList<Axis> xLegend = null;
 ArrayList<Axis> yAxes = null;
+ArrayList<Axis> yAxesRight = null;
 
 int X_AXIS = 1;
 int Y_AXIS = 2;
 int c1, c2;
 
 //spacing between each plot
-float spacing = 10;
+float spacing = 20;
 
 Text title = null;
 
@@ -31,34 +33,38 @@ void fileSelected(File selection) {
   } else {
     println("User selected " + selection.getAbsolutePath());
     myTable = loadTable( selection.getAbsolutePath(), "header" );
-    // TODO: create object
     
     scatterPlots = new ArrayList<ScatterPlot>();
     yAxes = new ArrayList<Axis>();
+    yAxesRight = new ArrayList<Axis>();
     
-    //y axis labels
+    //setup positions and values for y axis labels
     for (int y = 0; y < myTable.getColumnCount(); y++){
      
       Axis temp = new Axis(myTable, myTable.getColumnTitles()[y]);
+      Axis tempRight = new Axis(myTable, myTable.getColumnTitles()[y]);
       
       float cellHeight = (( height - 100) / myTable.getColumnCount() ) - spacing;
       
       temp.setPosition(  0 , 50 + (y * cellHeight) + (y * spacing ) , 50, cellHeight);
+      tempRight.setPosition(  (width - 50) , 50 + (y * cellHeight) + (y * spacing ) , 50, cellHeight);
       temp.yAxis();
+      tempRight.yAxis();
       
-      
-      yAxes.add(temp);
+      yAxes.add(temp);      
+      yAxesRight.add(tempRight);
     }
    
     xAxes = new ArrayList<Axis>();
     xLegend = new ArrayList<Axis>();
     
+    //setup colors to use for points and legend, hue from yellow to red based on increasing x value
     colorMode(HSB, 360, 100, 100);
     c1 = color(50, 100, 100);
     c2 = color(0, 100, 100);
     colorMode(RGB, 255, 255, 255);
     
-    //x axis labels
+    //setup positions and values for x axis labels and color legends
     for (int x = 0; x < myTable.getColumnCount(); x++){
      
       Axis temp = new Axis(myTable, myTable.getColumnTitles()[x]);
@@ -66,8 +72,7 @@ void fileSelected(File selection) {
       
       float cellWidth = ( (width - 100) / myTable.getColumnCount() ) - spacing;
       
-      temp.setPosition(  50 + (x * cellWidth) + (spacing * x) , height - 50, cellWidth, 50);
-      
+      temp.setPosition(  50 + (x * cellWidth) + (spacing * x) , height - 50, cellWidth, 50);   
       legend.setPosition(  50 + (x * cellWidth) + (spacing * x) , height - 50, cellWidth, 4);
       
       xAxes.add(temp);
@@ -75,7 +80,7 @@ void fileSelected(File selection) {
     }    
     
   
-    
+    //setup each scatter plot cell and add to list for drawing later
     for (int y = 0; y < myTable.getColumnCount(); y++){
       for (int x = 0; x < myTable.getColumnCount(); x++){
         
@@ -83,23 +88,18 @@ void fileSelected(File selection) {
         float w = width - 100;
         float h = height - 100;
         
-
- 
-        //float gaps = myTable.getColumnCount() - 1;
         //size of each plot
         float cellWidth = ( w / myTable.getColumnCount() ) - spacing;
         float cellHeight = ( h / myTable.getColumnCount() ) - spacing;
         
         ScatterPlot temp = new ScatterPlot( myTable, myTable.getColumnTitles()[x], myTable.getColumnTitles()[y]);
-        temp.setPosition( 50 + (x * cellWidth) + ( spacing * x ), 50 + (y * cellHeight)  + ( spacing * y ), cellWidth, cellHeight );
-        temp.setupPointList();
         
+        temp.setPosition( 50 + (x * cellWidth) + ( spacing * x ), 50 + (y * cellHeight)  + ( spacing * y ), cellWidth, cellHeight );
+        temp.setupPointList();   
         temp.setColorsX();
         
         scatterPlots.add( temp );
-        
-        
-        
+
       }
     }
     
@@ -111,7 +111,7 @@ void fileSelected(File selection) {
 }
 
 
-
+//draw everything using lists setup above
 void draw(){
   background( 255 );
   
@@ -119,8 +119,7 @@ void draw(){
     return;
   
   if( scatterPlots != null && scatterPlots.size() == myTable.getColumnCount() * myTable.getColumnCount()){
-   
-    //
+
     for (ScatterPlot p: scatterPlots) { p.draw(); p.drawBorder();}
   }
   
@@ -142,6 +141,11 @@ void draw(){
     for (Axis Ax: yAxes) {Ax.draw(); Ax.drawDistributedY(3); }
     
   }
+  if (yAxesRight != null){
+   
+    for (Axis Ax: yAxesRight) {Ax.draw(); Ax.drawAxisTitle();}
+    
+  }
   
   if (title != null){
    
@@ -152,12 +156,12 @@ void draw(){
 
 
 void mousePressed(){
-  //myFrame.mousePressed();
+
 }
 
 
 void mouseReleased(){
-  //myFrame.mouseReleased();
+
 }
 
 
@@ -167,7 +171,7 @@ abstract class Frame {
   float u0,v0,w,h;
   int clickBuffer = 2;
   //set sizes here
-  int axisFontSize = 6;
+  int axisFontSize = 10;
   int axisTitleFontSize = 14;
   int titleFontSize = 24;
   int subtitleFontSize = 16;

@@ -27,7 +27,7 @@ class Axis extends Frame {
     
     else {
       //drawDistributed();
-      drawAxisTitle();
+      //drawAxisTitle();
     }
   }
   
@@ -122,7 +122,7 @@ class Axis extends Frame {
     count -= 1;
     //center of text box is the point given
     rectMode( CENTER );
-    textAlign( LEFT, CENTER );
+    textAlign( CENTER, CENTER );
     textSize( axisFontSize );
     fill(0);
     
@@ -133,11 +133,13 @@ class Axis extends Frame {
     for (int i = 0; i <= count; i++ ){
      
       
-      String text = String.format("%.2f", displayNum);
+      String text = String.format("%.1f", displayNum);
       
       //draw text with room for axis  lines
-      text( text, u0 + w/2, yPos, (w/2) - axisFontSize, h / count );
+      text( text, u0 + w/2, yPos, w, h / count );
       
+      
+      stroke(0);
       line(u0 + w, yPos, u0 + w - axisFontSize, yPos);
       
       //update yPos
@@ -165,7 +167,8 @@ class Axis extends Frame {
     for (int i = 0; i <= count; i++ ){
      
       
-      String text = String.format("%.2f", displayNum);
+      String text = String.format("%.0f", displayNum);
+      stroke(0);
       text( text, xPos, v0 + h/4, w, h / count );
       
       line( xPos, v0 + h/4 - axisFontSize, xPos, v0);
@@ -233,6 +236,8 @@ class Axis extends Frame {
       }
     }
   }
+  
+  //draw gradient at position provided from setPostion
   void drawGradient( color c1, color c2, int axis ) {
   
     
