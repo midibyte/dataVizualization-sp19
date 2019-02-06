@@ -46,21 +46,44 @@ public class ScatterPlot extends Frame{
       float newY = map(dataY[i], min_y, max_y, v0 + h, v0);
       //float newY = map(dataY[i], min_y, max_y, v0, v0 +h);
       
-      points.add( new Point(newX, newY) );
+      points.add( new Point(newX, newY, dataX[i], dataY[i] ) );
       
     }
   }
   
+  void setColorsX(){
+     if(points == null) {return;}
+     
+     colorMode(HSB, 360, 100, 100);
+     
+     for(Point p: points){
+      
+       p.setColor( color ( map( p.x, u0, u0+w, 50, 0 ), 100, 100 ) );
+       
+     }
+     
+     colorMode(RGB, 255, 255, 255);
+    
+  }
   
   void draw(){
     
     if (points != null){
       for (Point p: points){
-       
-        fill(0);
-        stroke(0);
-        ellipse(p.x, p.y, pointSize, pointSize);
+        //fill(0);
+        //colorMode(HSB, 360, 100, 100);
+        //fill( map( p.datax, min_x, max_x, 0, 255 ), 0, 0, map( p.datax, min_x, max_x, 0, 255 ) );
+        //stroke( map( p.datax, min_x, max_x, 0, 255 ), 0, 0, map( p.datax, min_x, max_x, 0, 255 ) );
         
+        if (p.ptColor != -1){
+          fill(p.ptColor);
+          stroke(p.ptColor);
+        }
+        
+        ellipse(p.x, p.y, pointSize, pointSize);
+        //colorMode(RGB);
+        //noFill();
+        //noStroke();
       }
     
   }

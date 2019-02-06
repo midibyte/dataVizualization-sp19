@@ -17,8 +17,8 @@ public class ScatterPlot extends Frame{
     
   }
   
-  void setXCol(String _useX) { useX = _useX; setupPointList(); }
-  void setYCol(String _useY) { useY = _useY; setupPointList(); }
+  void setXCol(String _useX) { useX = _useX; setupPointList(); setColorsX(); }
+  void setYCol(String _useY) { useY = _useY; setupPointList(); setColorsX(); }
   
   void setupPointList() {  
 
@@ -51,15 +51,35 @@ public class ScatterPlot extends Frame{
     }
   }
   
+  void setColorsX(){
+     if(points == null) {return;}
+     
+     colorMode(HSB, 360, 100, 100);
+     
+     for(Point p: points){
+      
+       p.setColor( color ( map( p.x, u0, u0+w, 50, 0 ), 100, 100 ) );
+       
+     }
+     
+     colorMode(RGB, 255, 255, 255);
+    
+  }
   
   void draw(){
     
     if (points != null){
       for (Point p: points){
-       
-        fill(0);
-        stroke(0);
-        ellipse(p.x, p.y, 6, 6);
+        
+        if (p.ptColor != -1){
+          fill(p.ptColor);
+          stroke(p.ptColor);
+        }
+        else{
+          fill(0);
+          stroke(0);
+        }
+        ellipse(p.x, p.y, pointSize, pointSize);
         
       }
     

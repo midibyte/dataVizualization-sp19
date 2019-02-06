@@ -5,7 +5,17 @@ Table myTable = null;
 
 ArrayList<ScatterPlot> scatterPlots = null;
 ArrayList<Axis> xAxes = null;
+ArrayList<Axis> xLegend = null;
 ArrayList<Axis> yAxes = null;
+
+int X_AXIS = 1;
+int Y_AXIS = 2;
+int c1, c2;
+
+//spacing between each plot
+float spacing = 10;
+
+Text title = null;
 
 void setup(){
   size(800,600);  
@@ -26,32 +36,42 @@ void fileSelected(File selection) {
     scatterPlots = new ArrayList<ScatterPlot>();
     yAxes = new ArrayList<Axis>();
     
+    //y axis labels
     for (int y = 0; y < myTable.getColumnCount(); y++){
      
       Axis temp = new Axis(myTable, myTable.getColumnTitles()[y]);
       
-      float cellHeight = height / myTable.getColumnCount();
+      float cellHeight = (( height - 100) / myTable.getColumnCount() ) - spacing;
       
-      temp.setPosition(  0 , y * cellHeight, 100, cellHeight);
+      temp.setPosition(  0 , 50 + (y * cellHeight) + (y * spacing ) , 50, cellHeight);
       temp.yAxis();
-      temp.drawDistributedY(4);
+      
       
       yAxes.add(temp);
     }
    
     xAxes = new ArrayList<Axis>();
+    xLegend = new ArrayList<Axis>();
     
+    colorMode(HSB, 360, 100, 100);
+    c1 = color(50, 100, 100);
+    c2 = color(0, 100, 100);
+    colorMode(RGB, 255, 255, 255);
+    
+    //x axis labels
     for (int x = 0; x < myTable.getColumnCount(); x++){
      
       Axis temp = new Axis(myTable, myTable.getColumnTitles()[x]);
+      Axis legend = new Axis(myTable, myTable.getColumnTitles()[x]);
       
-      float cellWidth = width / myTable.getColumnCount();
+      float cellWidth = ( (width - 100) / myTable.getColumnCount() ) - spacing;
       
-      temp.setPosition(  x * cellWidth , height - 100, cellWidth, 100);
+      temp.setPosition(  50 + (x * cellWidth) + (spacing * x) , height - 50, cellWidth, 50);
       
-      temp.drawDistributedX(4);
+      legend.setPosition(  50 + (x * cellWidth) + (spacing * x) , height - 50, cellWidth, 4);
       
       xAxes.add(temp);
+      xLegend.add(legend);
     }    
     
   
@@ -59,15 +79,22 @@ void fileSelected(File selection) {
     for (int y = 0; y < myTable.getColumnCount(); y++){
       for (int x = 0; x < myTable.getColumnCount(); x++){
         
+        //total size of all scatter plots
         float w = width - 100;
         float h = height - 100;
         
-        float cellWidth = w / myTable.getColumnCount();
-        float cellHeight = h / myTable.getColumnCount();
+
+ 
+        //float gaps = myTable.getColumnCount() - 1;
+        //size of each plot
+        float cellWidth = ( w / myTable.getColumnCount() ) - spacing;
+        float cellHeight = ( h / myTable.getColumnCount() ) - spacing;
         
         ScatterPlot temp = new ScatterPlot( myTable, myTable.getColumnTitles()[x], myTable.getColumnTitles()[y]);
-        temp.setPosition( 100 + (x * cellWidth), (y * cellHeight), cellWidth, cellHeight );
+        temp.setPosition( 50 + (x * cellWidth) + ( spacing * x ), 50 + (y * cellHeight)  + ( spacing * y ), cellWidth, cellHeight );
         temp.setupPointList();
+        
+        temp.setColorsX();
         
         scatterPlots.add( temp );
         
@@ -76,6 +103,8 @@ void fileSelected(File selection) {
       }
     }
     
+    title = new Text(selection.getName(), 0);
+    title.setPosition(0, 0, width, 50);
     //prevent drawing before arraylist is filled
     loop();
   }
@@ -95,18 +124,30 @@ void draw(){
     for (ScatterPlot p: scatterPlots) { p.draw(); p.drawBorder();}
   }
   
+  if (xLegend != null){
+   
+    for (Axis Ax: xLegend) { Ax.drawGradient(c1, c2, X_AXIS); }
+    
+  }  
+
   if (xAxes != null){
    
-    for (Axis Ax: xAxes) {Ax.draw(); }
+    for (Axis Ax: xAxes) {Ax.drawDistributedX(3); Ax.draw(); }
     
   }
+  
   
   if (yAxes != null){
    
-    for (Axis Ax: yAxes) {Ax.draw(); }
+    for (Axis Ax: yAxes) {Ax.draw(); Ax.drawDistributedY(3); }
     
   }
   
+  if (title != null){
+   
+    title.draw();
+    
+  }
 }
 
 
@@ -128,7 +169,7 @@ abstract class Frame {
   //set sizes here
   int axisFontSize = 6;
   int axisTitleFontSize = 14;
-  int titleFontSize = 32;
+  int titleFontSize = 24;
   int subtitleFontSize = 16;
   int pointLabelFontSize = 16;
   int pointSize = 3;

@@ -1,11 +1,19 @@
 import java.util.Arrays;
 import java.util.List;
 
+int X_AXIS = 1;
+int Y_AXIS = 2;
+int c1, c2;
+
 Table myTable = null;
 
 ScatterPlot scatter = null;
 Axis yAxis = null;
 Axis xAxis = null;
+Axis legend = null;
+Text title = null;
+Text subtitle = null;
+
 String xCol, yCol;
 int state = 0;
 
@@ -17,6 +25,7 @@ void setup(){
 
 
 void fileSelected(File selection) {
+  noLoop();
   if (selection == null) {
     println("Window was closed or the user hit cancel.");
     selectInput("Select a file to process:", "fileSelected");
@@ -31,11 +40,28 @@ void fileSelected(File selection) {
     scatter = new ScatterPlot(myTable, xCol, yCol);
     scatter.setPosition( 100, 100, width - 200, height - 200);
     scatter.setupPointList(); 
+    scatter.setColorsX();
     
     yAxis = new Axis(myTable, yCol);
     xAxis = new Axis(myTable, xCol);
     
-    // TODO: create object
+    title = new Text(selection.getName(), 0);
+    title.setPosition(0, 0, width, 50);
+    
+    subtitle = new Text("Press any key to change view", 0);
+    subtitle.setPosition(0, 50, width, 50);
+    subtitle.setTitleSize(16);
+    
+    legend = new Axis(myTable, yCol);
+    
+    colorMode(HSB, 360, 100, 100);
+    c1 = color(50, 100, 100);
+    c2 = color(0, 100, 100);
+    colorMode(RGB, 255, 255, 255);
+    
+    
+    loop();
+    
   }
 }
 
@@ -46,11 +72,30 @@ void draw(){
   if( myTable == null ) 
     return;
   
+  if(legend != null) {
+    legend.setPosition( 0, 0, width/4, 100 );
+    legend.setGradient( 100, 500, 600, 10, c1, c2, X_AXIS);
+    //legend.drawDistributedX(6);
+  }
+  
   if( scatter != null ){
        
 
      scatter.draw();
      scatter.drawBorder();
+  }
+  
+  if( title != null ){
+       
+     
+     title.draw();
+     
+  }
+  if( subtitle != null ){
+       
+     
+     subtitle.draw();
+     
   }
   
   if( yAxis != null ){
@@ -68,6 +113,8 @@ void draw(){
      //xAxis.drawDistributed();
      xAxis.draw();
   }
+  
+
 }
 
 void keyPressed(){
@@ -92,18 +139,12 @@ void keyPressed(){
 }
 
 void mousePressed(){
-  //myFrame.mousePressed();
-  scatter.setXCol(myTable.getColumnTitles()[2]);
-  scatter.setYCol(myTable.getColumnTitles()[3]);
-  //scatter.setupPointList();
+
 }
 
 
 void mouseReleased(){
-  //myFrame.mouseReleased();
-  scatter.setXCol(myTable.getColumnTitles()[0]);
-  scatter.setYCol(myTable.getColumnTitles()[1]);
-  //scatter.setupPointList();
+
 }
 
 
@@ -118,8 +159,12 @@ abstract class Frame {
   int titleFontSize = 32;
   int subtitleFontSize = 16;
   int pointLabelFontSize = 16;
-  int pointSize = 16;
-     
+  int pointSize = 6;
+  
+  void setTitleSize(int newSize){
+    titleFontSize = newSize;
+  }
+  
   void setPosition( int u0, int v0, int w, int h ){
     this.u0 = u0;
     this.v0 = v0;
