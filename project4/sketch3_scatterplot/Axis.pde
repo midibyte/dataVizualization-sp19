@@ -12,7 +12,8 @@ class Axis extends Frame {
      numbers = data.getFloatColumn(useColumn);
      //println(numbers);
      Arrays.sort(numbers);
-     min = 0.0;
+     //min = 0.0;
+     min = numbers[0];
      max = numbers[numbers.length - 1];
      println(min);
      println(max);
@@ -36,7 +37,8 @@ class Axis extends Frame {
     numbers = data.getFloatColumn(useColumn);
      //println(numbers);
      Arrays.sort(numbers);
-     min = 0.0;
+     //min = 0.0;
+     min = numbers[0];
      max = numbers[numbers.length - 1];
      println(min);
      println(max);
@@ -116,7 +118,7 @@ class Axis extends Frame {
     
   }
   
-  //draw count numbers along the y axis from min to max
+  //draw count numbers along the y axis from  to max
   void drawDistributedY(int count) {
     //adjust count so that the correct number of markings will show
     count -= 1;

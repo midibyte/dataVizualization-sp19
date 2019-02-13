@@ -31,7 +31,10 @@ public class ScatterPlot extends Frame{
     
     max_x = dataX[dataX.length - 1];
     max_y = dataY[dataY.length - 1];
-    min_x = min_y = 0;
+    min_x = dataX[0];
+    min_y = dataY[0];
+    
+    //min_x = min_y = 0;
     
     points = new ArrayList<Point>();
     
@@ -58,7 +61,10 @@ public class ScatterPlot extends Frame{
      
      for(Point p: points){
       
-       p.setColor( color ( map( p.x, u0, u0+w, 50, 0 ), 100, 100 ) );
+       //hue from yellow to red
+       //p.setColor( color ( map( p.x, u0, u0+w, 50, 0 ), 100, 100 ) );
+       //saturation from white to red
+       p.setColor( color ( 230, map( p.x, u0, u0+w, 15, 100 ), 100 ) );
        
      }
      
@@ -79,6 +85,8 @@ public class ScatterPlot extends Frame{
           fill(0);
           stroke(0);
         }
+        
+        //stroke(0);
         ellipse(p.x, p.y, pointSize, pointSize);
         
       }

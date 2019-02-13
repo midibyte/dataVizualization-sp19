@@ -19,7 +19,7 @@ int state = 0;
 
 
 void setup(){
-  size(800,600);  
+  size(1000,700);  
   selectInput("Select a file to process:", "fileSelected");
 }
 
@@ -65,6 +65,8 @@ void fileSelected(File selection) {
     colorMode(HSB, 360, 100, 100);
     c1 = color(50, 100, 100);
     c2 = color(0, 100, 100);
+    c1 = color(230, 15, 100);
+    c2 = color(230, 100, 100);
     colorMode(RGB, 255, 255, 255);
     
     
@@ -83,7 +85,7 @@ void draw(){
   if(legend != null) {
     //set gradient position and colors to use as legend on x axis
     legend.setPosition( 0, 0, width/4, 100 );
-    legend.setGradient( 100, 500, 600, 10, c1, c2, X_AXIS);
+    legend.setGradient( 100, height - 100, width - 200, 10, c1, c2, X_AXIS);
     //legend.drawDistributedX(6);
   }
   
@@ -109,7 +111,7 @@ void draw(){
 
   if( xAxis != null ){
        
-     xAxis.setPosition( 100, 500, 600, 100);
+     xAxis.setPosition( 100, height - 100, width - 200, 100);
      xAxis.drawDistributedX(6);
      //xAxis.drawDistributed();
      xAxis.draw();
