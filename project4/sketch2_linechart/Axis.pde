@@ -124,7 +124,7 @@ class Axis extends Frame {
     count -= 1;
     //center of text box is the point given
     rectMode( CENTER );
-    textAlign( LEFT, CENTER );
+    textAlign( CENTER, CENTER );
     textSize( axisFontSize );
     fill(0);
     
@@ -139,7 +139,40 @@ class Axis extends Frame {
       String text = String.format("%.2f", displayNum);
       
       //draw text with room for axis  lines
-      text( text, u0 + w/2, yPos, (w/2) - axisFontSize, h / count );
+      text( text, u0 + w/2, yPos );
+      
+      line(u0 + w, yPos, u0 + w - axisFontSize, yPos);
+      
+      //update yPos
+      yPos -= h_interval;
+      
+      
+    }
+    
+  }
+  
+  //draw count numbers along the y axis from  to max
+  void drawDistributedYNoTitle(int count) {
+    //adjust count so that the correct number of markings will show
+    count -= 1;
+    //center of text box is the point given
+    rectMode( CENTER );
+    textAlign( CENTER, CENTER );
+    textSize( axisFontSize );
+    fill(0);
+    
+    float h_interval = h / count;
+    float yPos = v0 + h;  //set starting  y coord
+    float displayNum = min;
+    
+    for (int i = 0; i <= count; i++ ){
+
+      displayNum = lerp(min, max, ( (float)i/count ) );
+      
+      String text = String.format("%.2f", displayNum);
+      
+      //draw text with room for axis  lines
+      text( text, u0 + (w/3), yPos );
       
       line(u0 + w, yPos, u0 + w - axisFontSize, yPos);
       
@@ -153,6 +186,47 @@ class Axis extends Frame {
   
   //draw count numbers along the x axis from min to max
   void drawDistributedX(int count) {
+    //adjust count so that the correct number of markings will show
+    count -= 1;
+    //center of text box is the point given
+    rectMode( CENTER );
+    textAlign( CENTER, CENTER );
+    textSize( axisFontSize );
+    fill(0);
+    
+    float interval = w / count;
+    float xPos = u0;  //set starting  x coord
+    float displayNum = min;
+    
+    for (int i = 0; i <= count; i++ ){
+     
+      if (i == 0) {
+        textAlign(LEFT, CENTER); 
+      }
+      if (i == count) {
+        textAlign(RIGHT, CENTER); 
+      }
+      else {
+        textAlign( CENTER, CENTER );
+      }
+      
+      displayNum = lerp(min, max, ( (float)i/count ) );
+      
+      String text = String.format("%.2f", displayNum);
+      text( text, xPos, v0 + h/4 );
+      
+      line( xPos, v0 + h/6, xPos, v0);
+      
+      //update xPos
+      xPos += interval;
+      
+      
+    }
+    
+  }
+  
+    //draw count numbers along the x axis from min to max
+  void drawDistributedXNoTitle(int count) {
     //adjust count so that the correct number of markings will show
     count -= 1;
     //center of text box is the point given
@@ -181,6 +255,7 @@ class Axis extends Frame {
     }
     
   }
+  
   void drawAxisTitle() {
      //y axis
      float x, y;
@@ -189,6 +264,7 @@ class Axis extends Frame {
      y = v0 + h/2;
      textSize( axisTitleFontSize );
      fill(0);
+     fill(0, 102, 153, 204);
      pushMatrix();
      translate(x,y);
      rotate(rotateAmount);
@@ -206,6 +282,7 @@ class Axis extends Frame {
      y = v0 + ( h/4 * 3 );    //place at bottom quarter
      textSize( axisTitleFontSize );
      fill(0);
+     fill(0, 102, 153, 204);
      pushMatrix();
      translate(x,y);
      rotate(rotateAmount);
@@ -230,6 +307,36 @@ class Axis extends Frame {
     }  
     else if (axis == X_AXIS) {  // Left to right gradient
       for (int i = x; i <= x+w; i++) {
+        float inter = map(i, x, x+w, 0, 1);
+        color c = lerpColor(c1, c2, inter);
+        stroke(c);
+        line(i, y, i, y+h);
+      }
+    }
+  }
+  //draw gradient at position provided from setPostion
+  void drawGradient( color c1, color c2, int axis ) {
+  
+    
+    float x, y;
+
+    
+    x = u0;
+    y = v0;
+
+    
+    noFill();
+  
+    if (axis == Y_AXIS) {  // Top to bottom gradient
+      for (float i = y; i <= y+h; i++) {
+        float inter = map(i, y, y+h, 0, 1);
+        color c = lerpColor(c1, c2, inter);
+        stroke(c);
+        line(x, i, x+w, i);
+      }
+    }  
+    else if (axis == X_AXIS) {  // Left to right gradient
+      for (float i = x; i <= x+w; i++) {
         float inter = map(i, x, x+w, 0, 1);
         color c = lerpColor(c1, c2, inter);
         stroke(c);

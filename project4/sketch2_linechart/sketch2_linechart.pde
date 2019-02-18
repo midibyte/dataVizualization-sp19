@@ -1,26 +1,51 @@
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Collections;
 import java.util.Set;
 import java.util.HashSet;
 
 
+//used to sort points by x coord with custom comparator
+public class PointCompare implements Comparator<Point> {
+ 
+  @Override
+  public int compare(Point p1, Point p2) {
+    //return p1.x.compareTo(p2.x); 
+    return Float.compare(p1.x, p2.x);
+  }
+  
+}
+  
+
+
 int X_AXIS = 1;
 int Y_AXIS = 2;
 int c1, c2;
+int state = 0;
 
 Table myTable = null;
 Text title = null;
+Text subtitle = null;
 Text legend = null;
+Text popup = null;
 Axis x_axis = null;
 Axis y_axis = null;
 Linechart chart = null;
-float displayFractionWidth, displayFractionHeight;
+float displayFractionWidth, displayFractionHeight, titleHeight, xAxisH, xAxisW, yAxisH, yAxisW;;
 String xLabelCol, displayDataCol, pointLabelCol;
 
 //get input file
 void setup(){
   size(1000, 700);
+  
+  
+  titleHeight = 80;
+  xAxisH = 50;
+  yAxisW = 100;
+  xAxisW = width - yAxisW*2;
+  yAxisH = height - titleHeight - xAxisH;
+  
   displayFractionWidth = width/8;
   displayFractionHeight = height/8;
   selectInput("Select a file to process:", "fileSelected");
@@ -28,6 +53,7 @@ void setup(){
 
 //file open dialog, load into table object, create barchart with Barchart Class
 void fileSelected(File selection) {
+  noLoop();
   if (selection == null) {
     println("Window was closed or the user hit cancel.");
     selectInput("Select a file to process:", "fileSelected");
@@ -41,16 +67,20 @@ void fileSelected(File selection) {
     pointLabelCol = myTable.getColumnTitles()[3];
     
     //line chart
-    chart = new Linechart( myTable, displayDataCol );
+    chart = new Linechart( myTable, displayDataCol, xLabelCol );
     chart.setPosition( displayFractionWidth, displayFractionHeight, displayFractionWidth * 6, displayFractionHeight * 6);
     //need to set position before setting up points
     chart.setupPointList();
     chart.setColorsFromNames(pointLabelCol);
     
-    
     //set title from file name
     title = new Text (selection.getName(), 0);
-    title.setPosition( 0, 0, displayFractionWidth * 8, displayFractionHeight );
+    title.setPosition( 0, 0, width, titleHeight );
+    
+    //subtitle
+    subtitle = new Text("Click any point to see value, press any key to change view", 0);
+    subtitle.setPosition(0, titleHeight/3, width, titleHeight);
+    subtitle.setTitleSize(16);
     
     ////color legend
     //legend.setPosition( displayFractionWidth * 7, displayFractionHeight, displayFractionWidth, displayFractionHeight * 6 );
@@ -69,6 +99,8 @@ void fileSelected(File selection) {
     x_axis.xAxis();
 
   }
+  
+  loop();
 }
 
 
@@ -87,10 +119,16 @@ void draw(){
   }
   
   if ( title != null ){
-    
+
     title.draw();
   }
-  
+  if ( subtitle != null ){
+
+    subtitle.draw();
+  }
+  if ( popup != null ){
+    popup.draw();
+  }
   if ( y_axis != null ){
     y_axis.drawDistributedY(3);
     y_axis.draw();
@@ -108,10 +146,72 @@ void draw(){
   
 }
 
+//switch column to display when any key pressed
+void keyPressed(){
+  
+  popup = null;
+  
+  noLoop();
+  if (state == 0){
+    state = 1;
+    //set data to display from the table
+    xLabelCol = myTable.getColumnTitles()[0];
+    displayDataCol = myTable.getColumnTitles()[1];
+    //nameCol = myTable.getColumnTitles()[3];
+  }
+  else{
+    state = 0;
+    //set data to display from the table
+    xLabelCol = myTable.getColumnTitles()[2];
+    displayDataCol = myTable.getColumnTitles()[3];
+    //nameCol = myTable.getColumnTitles()[3];
+    
+  }
+    
 
-void mousePressed(){
-  //chart.mousePressed();
+    
+    //line chart
+    chart = new Linechart( myTable, displayDataCol, xLabelCol );
+    chart.setPosition( yAxisW, titleHeight, xAxisW, yAxisH);
+    //need to set position before setting up points
+    chart.setupPointList();
+    chart.setColorsFromNames(pointLabelCol);
+    
+    y_axis = new Axis( myTable, displayDataCol );
+    y_axis.setPosition( 0, titleHeight, yAxisW, yAxisH);
+    y_axis.yAxis();
+    
+    x_axis = new Axis( myTable, xLabelCol );
+    x_axis.setPosition( yAxisW, titleHeight + yAxisH, xAxisW, xAxisH);
+    //set to x axis for text
+    x_axis.xAxis();
+    
+    loop();
+  
+ 
+  
 }
+
+void mousePressed(){ 
+
+  if (chart.getPointList() != null){
+    for (Point p: chart.getPointList()){
+      if(p.mouseInside()) {
+       
+        noLoop();
+        String text = String.format("%s, %s: %.2f, %.2f",xLabelCol,displayDataCol, p.origX, p.origY);
+        popup = new Text(text, 0);
+        popup.setPosition( 0, (titleHeight/3) * 2, width,titleHeight);
+        popup.setTitleSize(14);
+        loop();
+      }
+      
+    }
+}  
+  
+  
+}
+
 
 
 void mouseReleased(){
@@ -127,11 +227,14 @@ abstract class Frame {
   //set sizes here
   int axisFontSize = 14;
   int axisTitleFontSize = 16;
-  int titleFontSize = 32;
+  int titleFontSize = 20;
   int subtitleFontSize = 16;
   int pointLabelFontSize = 16;
   int pointSize = 5;
      
+  void setTitleSize(int newSize){
+    titleFontSize = newSize;
+  } 
   void setPosition( int u0, int v0, int w, int h ){
     this.u0 = u0;
     this.v0 = v0;
@@ -147,6 +250,7 @@ abstract class Frame {
   }
   
   abstract void draw();
+
   void mousePressed(){ }
   void mouseReleased(){ }
   

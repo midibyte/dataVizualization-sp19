@@ -4,18 +4,28 @@ class Linechart extends Frame {
 
   Table data;        //Table Object
   String useColumn;  //column to display along y axis
+  String xCol;        //column to use on the x axis
   int rows, displayCol;
   float dataMin, dataMax;
   ArrayList<Point> points = null;
   List<String> names;
+  float min_x, min_y, max_x, max_y;
+
+  String useX, useY;
+  float[] dataX, dataY;
 
   boolean colors = false;
   ArrayList<String> uniqueNamesList = null;
   ArrayList<Integer> rgb = null;
 
-  Linechart( Table _data, String _useColumn ) {
+  ArrayList<Point> sortedPoints = null;
+
+  Linechart( Table _data, String _useColumn, String _xCol ) {
     data = _data;
     useColumn = _useColumn;              //will be label at bottom of chart
+    xCol = _xCol;
+    useX = xCol;
+    useY = _useColumn;
     rows = data.getRowCount();
     data.print();
     displayCol = data.getColumnIndex(useColumn);
@@ -30,7 +40,7 @@ class Linechart extends Frame {
     }
     
     //start at 0
-    dataMin = 0;
+    dataMin = Collections.min(barData);
     dataMax = Collections.max(barData);
 
   }
@@ -86,25 +96,73 @@ class Linechart extends Frame {
     
   }
   
+  //void setupPointList() {  
+
+  //  points = new ArrayList<Point>();
+    
+  //  //width of each bar - use window width
+  //  float barWidth = w / rows;
+  //  //data column to use
+    
+  //  //first get point coordinates
+  //  for (int i = 0; i < data.getRowCount(); i++){
+
+  //    //map: value, current_start, current_end, target_start, target_end
+  //    float adjustedHeight = map( data.getFloat( i, displayCol ), dataMin, dataMax, 0, h );
+
+  //    //add point to point list
+  //    Point temp = new Point( (barWidth/2) + u0 + ( barWidth * i ), v0 + h - adjustedHeight );
+      
+  //    temp.setPointSize(pointSize);
+  //    temp.setOrigXY( data.getFloat( i, xCol ), data.getFloat( i, displayCol ));
+      
+  //    points.add( temp );
+
+  //  }
+  //}
   void setupPointList() {  
 
+    //get data arrays from table
+    dataX = data.getFloatColumn(useX);
+    dataY = data.getFloatColumn(useY);
+    
+    //sort arrays to get min and max
+    Arrays.sort(dataX);
+    Arrays.sort(dataY);
+    
+    max_x = dataX[dataX.length - 1];
+    max_y = dataY[dataY.length - 1];
+    min_x = dataX[0];
+    min_y = dataY[0];
+    
+    //min_x = min_y = 0;
+    
     points = new ArrayList<Point>();
     
-    //width of each bar - use window width
-    float barWidth = w / rows;
-    //data column to use
+    //map x and y data to frame size
+    //x: u0, u0+w
+    //y: v0, v0+h
     
-    //first get point coordinates
-    for (int i = 0; i < data.getRowCount(); i++){
+    for (int i = 0; i < dataX.length; i++){
+     
 
-      //map: value, current_start, current_end, target_start, target_end
-      float adjustedHeight = map( data.getFloat( i, displayCol ), dataMin, dataMax, 0, h );
+      float newX = map(data.getFloatColumn(useX)[i], min_x, max_x, u0, u0 + w);
+      //reverse target to get correct position
+      float newY = map(data.getFloatColumn(useY)[i], min_y, max_y, v0 + h, v0);
+      //float newY = map(dataY[i], min_y, max_y, v0, v0 +h);
 
-      //add point to point list
-      Point temp = new Point( (barWidth/2) + u0 + ( barWidth * i ), v0 + h - adjustedHeight );
+      //println(newX + " " + newY);
+      Point temp = new Point(newX, newY);
+      temp.setOrigXY(data.getFloatColumn(useX)[i], data.getFloatColumn(useY)[i]);
+      temp.setPointSize(pointSize);
       points.add( temp );
-
+      
     }
+    
+    //sort point list by x to get correct placement on x axis
+    sortedPoints = new ArrayList<Point>(points);
+    Collections.sort(sortedPoints, new PointCompare());
+    points = sortedPoints;
   }
   
   void labelsBelowPoints(){
