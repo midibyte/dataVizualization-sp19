@@ -21,13 +21,12 @@ class Text extends Frame {
   
   void draw(){
 
-    //just prints a string
     if(uniqueNamesList == null){
       rectMode( CENTER );
-      fill( 255 );
+      //fill( 255 );
       textSize( titleFontSize );
       fill(0, 102, 153, 204);
-      textAlign( CENTER, CENTER );    
+      textAlign( CENTER, TOP );    
       pushMatrix();
       translate( u0 + (w/2), v0 + (h/2) );
       rotate(rotationVal);
@@ -37,13 +36,14 @@ class Text extends Frame {
     else{
       textFromList();
     }
-    
+
   }
   
   void textFromList(){
     
     float textSize = subtitleFontSize;
     float textOffset = textSize;
+    rectMode( CENTER );
     textAlign( CENTER, CENTER );
     fill(0, 102, 153, 204);
     textSize( textSize );
@@ -57,7 +57,6 @@ class Text extends Frame {
       rectMode( CENTER );
       
       textSize( textSize );
-      
       
       if (colors == false) fill(0, 102, 153, 204);
       

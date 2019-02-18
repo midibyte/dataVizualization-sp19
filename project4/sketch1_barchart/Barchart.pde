@@ -13,6 +13,7 @@ class Barchart extends Frame {
   boolean colors = false;
   ArrayList<String> uniqueNamesList = null;
   ArrayList<Integer> rgb = null;
+  ArrayList<Bar> bars = null;
   
   Barchart( Table _data, String _useColumn ) {
     data = _data;
@@ -45,6 +46,8 @@ class Barchart extends Frame {
   ArrayList<Integer> getColorsList(){
    return rgb; 
   }
+  
+  ArrayList<Bar> getBarList() {return bars;}
   
   void labelsBelowPoints(){
    
@@ -88,7 +91,9 @@ class Barchart extends Frame {
 
   }
   
-  void draw() {  
+  void setupBars(){
+  
+    bars = new ArrayList<Bar>();
     
     noFill();
     stroke(0);
@@ -106,6 +111,8 @@ class Barchart extends Frame {
       //reverse target start and end
       float adjustedHeight = map( data.getFloat( i, displayCol ), dataMin, dataMax, 0, h );
       
+      color tempColor;
+      
       if (colors == true){
          //println(uniqueNamesList);
          int uniqueVal = uniqueNamesList.indexOf(names.get(i));
@@ -120,13 +127,32 @@ class Barchart extends Frame {
          //fill with color unique to the name
          fill(r.get(uniqueVal), g.get(uniqueVal), b.get(uniqueVal));
          
+         tempColor = color(r.get(uniqueVal), g.get(uniqueVal), b.get(uniqueVal));
+         
       }
       else {
         fill(100);
         stroke(0);
       }
       
-      rect(u0 + (barWidth * i), v0+h - adjustedHeight, barWidth, adjustedHeight);
+      bars.add(new Bar( (u0 + (barWidth * i) ), ( v0 + h - adjustedHeight ), barWidth, adjustedHeight, data.getFloat( i, displayCol ) ) );
+      
+      //rect(u0 + (barWidth * i), v0+h - adjustedHeight, barWidth, adjustedHeight);
+      
+    }
+    
+    
+  }
+  
+  ArrayList<Bar> getBars() {return bars;}
+  
+  void draw() {  
+ 
+    if(bars != null){
+     
+      for (Bar b: bars){
+        b.draw(); 
+      }
       
     }
   
