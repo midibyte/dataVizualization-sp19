@@ -26,12 +26,16 @@ public class ScatterPlot extends Frame{
     dataX = data.getFloatColumn(useX);
     dataY = data.getFloatColumn(useY);
     
+    //sort arrays to get min and max
     Arrays.sort(dataX);
     Arrays.sort(dataY);
     
     max_x = dataX[dataX.length - 1];
     max_y = dataY[dataY.length - 1];
-    min_x = min_y = 0;
+    min_x = dataX[0];
+    min_y = dataY[0];
+    
+    //min_x = min_y = 0;
     
     points = new ArrayList<Point>();
     
@@ -41,12 +45,15 @@ public class ScatterPlot extends Frame{
     
     for (int i = 0; i < dataX.length; i++){
      
-      float newX = map(dataX[i], min_x, max_x, u0, u0 + w);
+
+      float newX = map(data.getFloatColumn(useX)[i], min_x, max_x, u0, u0 + w);
       //reverse target to get correct position
-      float newY = map(dataY[i], min_y, max_y, v0 + h, v0);
+      float newY = map(data.getFloatColumn(useY)[i], min_y, max_y, v0 + h, v0);
       //float newY = map(dataY[i], min_y, max_y, v0, v0 +h);
+
+      //println(newX + " " + newY);
       
-      points.add( new Point(newX, newY, dataX[i], dataY[i] ) );
+      points.add( new Point(newX, newY) );
       
     }
   }

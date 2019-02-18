@@ -55,7 +55,7 @@ class Linechart extends Frame {
     for (int i = 1; i < points.size(); i++){
       Point p1 = points.get( i - 1);
       Point p2 = points.get( i );
-      strokeWeight(4);
+      strokeWeight(1);
       strokeJoin(ROUND);
       strokeCap(ROUND);
       line( p1.x, p1.y, p2.x, p2.y );

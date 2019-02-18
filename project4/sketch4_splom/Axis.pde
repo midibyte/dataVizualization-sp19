@@ -1,5 +1,5 @@
 class Axis extends Frame {
-  
+
   Table data;
   String useColumn; //column to use for the marks on the x axis
   float[] numbers;
@@ -12,7 +12,8 @@ class Axis extends Frame {
      numbers = data.getFloatColumn(useColumn);
      //println(numbers);
      Arrays.sort(numbers);
-     min = 0.0;
+     //min = 0.0;
+     min = numbers[0];
      max = numbers[numbers.length - 1];
      println(min);
      println(max);
@@ -27,7 +28,7 @@ class Axis extends Frame {
     
     else {
       //drawDistributed();
-      //drawAxisTitle();
+      drawAxisTitle();
     }
   }
   
@@ -36,7 +37,8 @@ class Axis extends Frame {
     numbers = data.getFloatColumn(useColumn);
      //println(numbers);
      Arrays.sort(numbers);
-     min = 0.0;
+     //min = 0.0;
+     min = numbers[0];
      max = numbers[numbers.length - 1];
      println(min);
      println(max);
@@ -116,35 +118,34 @@ class Axis extends Frame {
     
   }
   
-  //draw count numbers along the y axis from min to max
+  //draw count numbers along the y axis from  to max
   void drawDistributedY(int count) {
     //adjust count so that the correct number of markings will show
     count -= 1;
     //center of text box is the point given
     rectMode( CENTER );
-    textAlign( CENTER, CENTER );
+    textAlign( LEFT, CENTER );
     textSize( axisFontSize );
     fill(0);
     
-    float interval = h / count;
+    float h_interval = h / count;
     float yPos = v0 + h;  //set starting  y coord
     float displayNum = min;
     
     for (int i = 0; i <= count; i++ ){
-     
+
+      displayNum = lerp(min, max, ( (float)i/count ) );
       
-      String text = String.format("%.1f", displayNum);
+      String text = String.format("%.2f", displayNum);
       
       //draw text with room for axis  lines
-      text( text, u0 + w/2, yPos, w, h / count );
+      text( text, u0 + w/2, yPos, (w/2) - axisFontSize, h / count );
       
-      
-      stroke(0);
       line(u0 + w, yPos, u0 + w - axisFontSize, yPos);
       
       //update yPos
-      yPos -= interval;
-      displayNum += (max / count);
+      yPos -= h_interval;
+      
       
     }
     
@@ -166,16 +167,16 @@ class Axis extends Frame {
     
     for (int i = 0; i <= count; i++ ){
      
+      displayNum = lerp(min, max, ( (float)i/count ) );
       
-      String text = String.format("%.0f", displayNum);
-      stroke(0);
+      String text = String.format("%.2f", displayNum);
       text( text, xPos, v0 + h/4, w, h / count );
       
       line( xPos, v0 + h/4 - axisFontSize, xPos, v0);
       
       //update xPos
       xPos += interval;
-      displayNum += (max / count);
+      
       
     }
     
@@ -236,7 +237,6 @@ class Axis extends Frame {
       }
     }
   }
-  
   //draw gradient at position provided from setPostion
   void drawGradient( color c1, color c2, int axis ) {
   

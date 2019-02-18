@@ -15,7 +15,7 @@ String xLabelCol, displayDataCol, nameCol;
 
 //get input file
 void setup(){
-  size(600,600);
+  size(1000,700);
   //fractions to determine placement of frames
   displayFractionWidth = width/8;
   displayFractionHeight = height/8;
@@ -45,14 +45,26 @@ void fileSelected(File selection) {
     
     //set title from file name
     title = new Text (selection.getName(), 0);
-    
+    title.setPosition( 0, 0, displayFractionWidth * 8, displayFractionHeight );
     
     legend = new Text(myTable.getColumnTitles()[3].trim(), chart.getUniqueNamesList(), 0);
+    legend.setPosition( displayFractionWidth * 7, displayFractionHeight, displayFractionWidth, displayFractionHeight * 6 );
     legend.setTextColors( chart.getColorsList() );
     
     y_axis = new Axis( myTable, displayDataCol );
+    y_axis.setPosition( 0, displayFractionHeight, displayFractionWidth, displayFractionHeight * 6);
+    y_axis.yAxis();
     
     x_axis = new Axis( myTable, xLabelCol );
+    x_axis.setPosition( displayFractionWidth, displayFractionHeight * 7, displayFractionWidth * 6, displayFractionHeight);
+    //set to x axis for text
+    x_axis.xAxis();
+    
+    
+    //set positions
+    
+    
+    
   }
 }
 
@@ -76,28 +88,25 @@ void draw(){
   
   if ( title != null ){
     
-    title.setPosition( 0, 0, displayFractionWidth * 8, displayFractionHeight );
+    
     
     title.draw();
   }
   
   if ( legend != null ){
     
-    legend.setPosition( displayFractionWidth * 7, displayFractionHeight, displayFractionWidth, displayFractionHeight * 6 );
+    
     legend.draw();
   }
   
   if ( y_axis != null ){
     
-    y_axis.setPosition( 0, displayFractionHeight, displayFractionWidth, displayFractionHeight * 6);
-    y_axis.yAxis();
+    
     y_axis.draw();
   }
   if ( x_axis != null ){
     
-    x_axis.setPosition( displayFractionWidth, displayFractionHeight * 7, displayFractionWidth * 6, displayFractionHeight);
-    //set to x axis for text
-    x_axis.xAxis();
+    
     x_axis.draw();
   }
 }

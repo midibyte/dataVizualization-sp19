@@ -26,6 +26,7 @@ public class ScatterPlot extends Frame{
     dataX = data.getFloatColumn(useX);
     dataY = data.getFloatColumn(useY);
     
+    //sort arrays to get min and max
     Arrays.sort(dataX);
     Arrays.sort(dataY);
     
@@ -44,10 +45,13 @@ public class ScatterPlot extends Frame{
     
     for (int i = 0; i < dataX.length; i++){
      
-      float newX = map(dataX[i], min_x, max_x, u0, u0 + w);
+
+      float newX = map(data.getFloatColumn(useX)[i], min_x, max_x, u0, u0 + w);
       //reverse target to get correct position
-      float newY = map(dataY[i], min_y, max_y, v0 + h, v0);
+      float newY = map(data.getFloatColumn(useY)[i], min_y, max_y, v0 + h, v0);
       //float newY = map(dataY[i], min_y, max_y, v0, v0 +h);
+
+      //println(newX + " " + newY);
       
       points.add( new Point(newX, newY) );
       
@@ -73,21 +77,43 @@ public class ScatterPlot extends Frame{
   }
   
   void draw(){
-    
+    //println(points.size());
+    //println(dataX.length);
     if (points != null){
-      for (Point p: points){
+      //for (Point p: points){
         
-        if (p.ptColor != -1){
-          fill(p.ptColor);
-          stroke(p.ptColor);
+      //  if (p.ptColor != -1){
+      //    fill(p.ptColor);
+      //    stroke(p.ptColor);
+      //    ellipse(p.x, p.y, pointSize, pointSize);
+      //  }
+      //  else{
+      //    fill(0);
+      //    stroke(0);
+      //    ellipse(p.x, p.y, pointSize, pointSize);
+      //  }
+        
+      //  //stroke(0);
+        
+        
+      //}
+      for (int i = 0; i < points.size(); i++){
+        //println(i);
+        //points.get(i).print();
+        
+        if (points.get(i).ptColor != -1){
+          fill(points.get(i).ptColor);
+          stroke(points.get(i).ptColor);
+          ellipse(points.get(i).x, points.get(i).y, pointSize, pointSize);
         }
         else{
           fill(0);
           stroke(0);
+          ellipse(points.get(i).x, points.get(i).y, pointSize, pointSize);
         }
         
         //stroke(0);
-        ellipse(p.x, p.y, pointSize, pointSize);
+        
         
       }
     

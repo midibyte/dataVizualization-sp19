@@ -128,12 +128,13 @@ class Axis extends Frame {
     textSize( axisFontSize );
     fill(0);
     
-    float interval = h / count;
+    float h_interval = h / count;
     float yPos = v0 + h;  //set starting  y coord
     float displayNum = min;
     
     for (int i = 0; i <= count; i++ ){
-     
+
+      displayNum = lerp(min, max, ( (float)i/count ) );
       
       String text = String.format("%.2f", displayNum);
       
@@ -143,8 +144,8 @@ class Axis extends Frame {
       line(u0 + w, yPos, u0 + w - axisFontSize, yPos);
       
       //update yPos
-      yPos -= interval;
-      displayNum += (max / count);
+      yPos -= h_interval;
+      
       
     }
     
@@ -166,6 +167,7 @@ class Axis extends Frame {
     
     for (int i = 0; i <= count; i++ ){
      
+      displayNum = lerp(min, max, ( (float)i/count ) );
       
       String text = String.format("%.2f", displayNum);
       text( text, xPos, v0 + h/4, w, h / count );
@@ -174,7 +176,7 @@ class Axis extends Frame {
       
       //update xPos
       xPos += interval;
-      displayNum += (max / count);
+      
       
     }
     
@@ -228,6 +230,36 @@ class Axis extends Frame {
     }  
     else if (axis == X_AXIS) {  // Left to right gradient
       for (int i = x; i <= x+w; i++) {
+        float inter = map(i, x, x+w, 0, 1);
+        color c = lerpColor(c1, c2, inter);
+        stroke(c);
+        line(i, y, i, y+h);
+      }
+    }
+  }
+  //draw gradient at position provided from setPostion
+  void drawGradient( color c1, color c2, int axis ) {
+  
+    
+    float x, y;
+
+    
+    x = u0;
+    y = v0;
+
+    
+    noFill();
+  
+    if (axis == Y_AXIS) {  // Top to bottom gradient
+      for (float i = y; i <= y+h; i++) {
+        float inter = map(i, y, y+h, 0, 1);
+        color c = lerpColor(c1, c2, inter);
+        stroke(c);
+        line(x, i, x+w, i);
+      }
+    }  
+    else if (axis == X_AXIS) {  // Left to right gradient
+      for (float i = x; i <= x+w; i++) {
         float inter = map(i, x, x+w, 0, 1);
         color c = lerpColor(c1, c2, inter);
         stroke(c);

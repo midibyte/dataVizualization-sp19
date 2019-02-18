@@ -20,7 +20,7 @@ float spacing = 20;
 Text title = null;
 
 void setup(){
-  size(800,600);  
+  size(1000,700);  
   selectInput("Select a file to process:", "fileSelected");
 }
 
@@ -176,7 +176,7 @@ abstract class Frame {
   int titleFontSize = 24;
   int subtitleFontSize = 16;
   int pointLabelFontSize = 16;
-  int pointSize = 3;
+  int pointSize = 6;
      
   void setPosition( int u0, int v0, int w, int h ){
     this.u0 = u0;

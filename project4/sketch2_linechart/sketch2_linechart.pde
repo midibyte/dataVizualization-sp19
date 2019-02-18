@@ -4,6 +4,11 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.HashSet;
 
+
+int X_AXIS = 1;
+int Y_AXIS = 2;
+int c1, c2;
+
 Table myTable = null;
 Text title = null;
 Text legend = null;
@@ -15,7 +20,7 @@ String xLabelCol, displayDataCol, pointLabelCol;
 
 //get input file
 void setup(){
-  size(600, 600);
+  size(1000, 700);
   displayFractionWidth = width/8;
   displayFractionHeight = height/8;
   selectInput("Select a file to process:", "fileSelected");
@@ -35,8 +40,8 @@ void fileSelected(File selection) {
     displayDataCol = myTable.getColumnTitles()[1];
     pointLabelCol = myTable.getColumnTitles()[3];
     
+    //line chart
     chart = new Linechart( myTable, displayDataCol );
-    
     chart.setPosition( displayFractionWidth, displayFractionHeight, displayFractionWidth * 6, displayFractionHeight * 6);
     //need to set position before setting up points
     chart.setupPointList();
@@ -45,13 +50,23 @@ void fileSelected(File selection) {
     
     //set title from file name
     title = new Text (selection.getName(), 0);
+    title.setPosition( 0, 0, displayFractionWidth * 8, displayFractionHeight );
     
+    ////color legend
+    //legend.setPosition( displayFractionWidth * 7, displayFractionHeight, displayFractionWidth, displayFractionHeight * 6 );
+    //legend = new Text(myTable.getColumnTitles()[3].trim(), chart.getUniqueNamesList(), 0);
+    //legend.setTextColors( chart.getColorsList() );
     
-    legend = new Text(myTable.getColumnTitles()[3].trim(), chart.getUniqueNamesList(), 0);
-    legend.setTextColors( chart.getColorsList() );
-    
+    //y axis labels and ticks
     y_axis = new Axis( myTable, displayDataCol );
+    y_axis.setPosition( 0, displayFractionHeight, displayFractionWidth, displayFractionHeight * 6);
+    y_axis.yAxis();
+    
+    //x axis labels and ticks
     x_axis = new Axis( myTable, xLabelCol );
+    x_axis.setPosition( displayFractionWidth, displayFractionHeight * 7, displayFractionWidth * 6, displayFractionHeight);
+    //set to x axis for text
+    x_axis.xAxis();
 
   }
 }
@@ -66,35 +81,28 @@ void draw(){
   //draw chart
   if( chart != null ){
 
-       chart.labelsBelowPoints();
-       chart.drawBorder();
+       //chart.labelsBelowPoints();
+       //chart.drawBorder();
        chart.draw();
   }
   
   if ( title != null ){
     
-    title.setPosition( 0, 0, displayFractionWidth * 8, displayFractionHeight );
-    
     title.draw();
   }
   
   if ( y_axis != null ){
-    
-    y_axis.setPosition( 0, displayFractionHeight, displayFractionWidth, displayFractionHeight * 6);
-    y_axis.yAxis();
+    y_axis.drawDistributedY(3);
     y_axis.draw();
   }
   if ( x_axis != null ){
-    
-    x_axis.setPosition( displayFractionWidth, displayFractionHeight * 7, displayFractionWidth * 6, displayFractionHeight);
-    //set to x axis for text
-    x_axis.xAxis();
+    x_axis.drawDistributedX(6);
     x_axis.draw();
   }
   
   if ( legend != null ){
     
-    legend.setPosition( displayFractionWidth * 7, displayFractionHeight, displayFractionWidth, displayFractionHeight * 6 );
+    
     legend.draw();
   }
   
@@ -102,12 +110,12 @@ void draw(){
 
 
 void mousePressed(){
-  chart.mousePressed();
+  //chart.mousePressed();
 }
 
 
 void mouseReleased(){
-  chart.mouseReleased();
+  //chart.mouseReleased();
 }
 
 
@@ -122,7 +130,7 @@ abstract class Frame {
   int titleFontSize = 32;
   int subtitleFontSize = 16;
   int pointLabelFontSize = 16;
-  int pointSize = 16;
+  int pointSize = 5;
      
   void setPosition( int u0, int v0, int w, int h ){
     this.u0 = u0;
