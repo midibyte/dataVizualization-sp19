@@ -17,6 +17,7 @@ public class ScatterPlot extends Frame{
     
   }
   
+  
   void setXCol(String _useX) { useX = _useX; setupPointList(); }
   void setYCol(String _useY) { useY = _useY; setupPointList(); }
   
