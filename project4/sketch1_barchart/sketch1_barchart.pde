@@ -6,17 +6,6 @@ import java.util.Set;
 import java.util.HashSet;
 
 
-//used to sort points by x coord with custom comparator
-public class BarCompare implements Comparator<Bar> {
- 
-  @Override
-  public int compare(Bar b1, Bar b2) {
-    //return p1.x.compareTo(p2.x); 
-    return Float.compare(b1.origX, b2.origX);
-  }
-  
-}
-
 int X_AXIS = 1;
 int Y_AXIS = 2;
 int state = 1;
@@ -54,10 +43,26 @@ void fileSelected(File selection) {
     println("User selected " + selection.getAbsolutePath());
     myTable = loadTable( selection.getAbsolutePath(), "header" );
     
+    Table trimmedTable = loadTable( selection.getAbsolutePath(), "header" );
+    
+    for (int x = 0; x < trimmedTable.getColumnCount(); x++){
+     
+      if(Float.isNaN(trimmedTable.getFloat(3, myTable.getColumnTitles()[x])) )  
+        {
+         myTable.removeColumn(myTable.getColumnTitles()[x]);
+         println("col: " + x + " is nan");
+          
+        }
+
+    }
+    
+    
     //set data to display from the table
     xLabelCol = myTable.getColumnTitles()[0];
     displayDataCol = myTable.getColumnTitles()[2];
     nameCol = myTable.getColumnTitles()[3];
+    
+    myTable.sort(xLabelCol);
     
     chart = new Barchart( myTable, displayDataCol, xLabelCol );
     chart.setPosition( yAxisW, titleHeight, xAxisW, yAxisH);
@@ -181,14 +186,16 @@ void keyPressed(){
     xLabelCol = myTable.getColumnTitles()[0];
     displayDataCol = myTable.getColumnTitles()[2];
     //nameCol = myTable.getColumnTitles()[3];
+    myTable.sort(xLabelCol);
   }
   else{
     state = 0;
     //set data to display from the table
     xLabelCol = myTable.getColumnTitles()[1];
     displayDataCol = myTable.getColumnTitles()[3];
-    //nameCol = myTable.getColumnTitles()[3];
     
+    //nameCol = myTable.getColumnTitles()[3];
+    myTable.sort(xLabelCol);
   }
     
 

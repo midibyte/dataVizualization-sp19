@@ -146,11 +146,7 @@ class Barchart extends Frame {
       //rect(u0 + (barWidth * i), v0+h - adjustedHeight, barWidth, adjustedHeight);
       
     }
-    sortedBars = new ArrayList<Bar>(bars);
-      
-      Collections.sort(bars, new BarCompare());
-      
-      bars = sortedBars;
+
     
   }
   
@@ -159,25 +155,11 @@ class Barchart extends Frame {
   void draw() {  
  
     if(bars != null){
-      float barWidth = w / rows;
-      //for (Bar b: bars){
+      for (Bar b: bars){
         
-      //  b.setX(barWidth * bars.indexOf(b));
-        
-      //  b.draw(); 
-      //}
-      for (int i = 0; i < bars.size(); i++){
-        
-        Bar b = bars.get(i);
-        
-        //b.setX(u0 + (barWidth *i) );
-        rectMode(CORNER);
-        fill(100);
-        stroke(0);
-        rect(u0 + (barWidth *i), b.y, b.w, b.h);
-        //b.draw(); 
+        b.draw(); 
       }
-      
+  
     }
   
   }
