@@ -2,7 +2,7 @@ public class Point {
   
   float x, y;
   float pointSize = 0;
-  int clickBuffer = 2;
+  int clickBuffer = 6;
   float origX = 0; 
   float origY = 0;
   Point(float _x, float _y ){

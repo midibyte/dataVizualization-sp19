@@ -2,6 +2,8 @@ public class Point {
   
   float x, y, datax, datay;
   int ptColor = -1;
+  float pointSize = 0;
+  int clickBuffer = 6;
 
   Point(float _x, float _y ){
     x = _x;
@@ -23,6 +25,10 @@ public class Point {
     
     println( "x: " + x + " y: " + y );
     
+  }
+  
+  boolean mouseInside(){
+     return (x -clickBuffer < mouseX) && (x + pointSize +clickBuffer)>mouseX && (y -clickBuffer)< mouseY && (y+ pointSize + clickBuffer)>mouseY; 
   }
   
 }

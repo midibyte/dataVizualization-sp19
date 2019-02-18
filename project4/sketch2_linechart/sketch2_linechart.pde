@@ -22,7 +22,7 @@ public class PointCompare implements Comparator<Point> {
 int X_AXIS = 1;
 int Y_AXIS = 2;
 int c1, c2;
-int state = 0;
+int state = 1;
 
 Table myTable = null;
 Text title = null;
@@ -68,7 +68,7 @@ void fileSelected(File selection) {
     
     //line chart
     chart = new Linechart( myTable, displayDataCol, xLabelCol );
-    chart.setPosition( displayFractionWidth, displayFractionHeight, displayFractionWidth * 6, displayFractionHeight * 6);
+    chart.setPosition( yAxisW, titleHeight, xAxisW, yAxisH);
     //need to set position before setting up points
     chart.setupPointList();
     chart.setColorsFromNames(pointLabelCol);
@@ -87,14 +87,14 @@ void fileSelected(File selection) {
     //legend = new Text(myTable.getColumnTitles()[3].trim(), chart.getUniqueNamesList(), 0);
     //legend.setTextColors( chart.getColorsList() );
     
-    //y axis labels and ticks
+
+    
     y_axis = new Axis( myTable, displayDataCol );
-    y_axis.setPosition( 0, displayFractionHeight, displayFractionWidth, displayFractionHeight * 6);
+    y_axis.setPosition( 0, titleHeight, yAxisW, yAxisH);
     y_axis.yAxis();
     
-    //x axis labels and ticks
     x_axis = new Axis( myTable, xLabelCol );
-    x_axis.setPosition( displayFractionWidth, displayFractionHeight * 7, displayFractionWidth * 6, displayFractionHeight);
+    x_axis.setPosition( yAxisW, titleHeight + yAxisH, xAxisW, xAxisH);
     //set to x axis for text
     x_axis.xAxis();
 
@@ -230,7 +230,7 @@ abstract class Frame {
   int titleFontSize = 20;
   int subtitleFontSize = 16;
   int pointLabelFontSize = 16;
-  int pointSize = 5;
+  int pointSize = 8;
      
   void setTitleSize(int newSize){
     titleFontSize = newSize;

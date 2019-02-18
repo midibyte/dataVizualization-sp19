@@ -20,6 +20,8 @@ public class ScatterPlot extends Frame{
   void setXCol(String _useX) { useX = _useX; setupPointList(); setColorsX(); }
   void setYCol(String _useY) { useY = _useY; setupPointList(); setColorsX(); }
   
+  ArrayList<Point> getPointList() {return points;}
+  
   void setupPointList() {  
 
     //get data arrays from table
@@ -53,7 +55,7 @@ public class ScatterPlot extends Frame{
 
       //println(newX + " " + newY);
       
-      points.add( new Point(newX, newY) );
+      points.add( new Point(newX, newY, data.getFloatColumn(useX)[i], data.getFloatColumn(useY)[i] ) );
       
     }
   }

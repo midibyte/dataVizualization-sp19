@@ -12,14 +12,24 @@ Axis yAxis = null;
 Axis xAxis = null;
 Axis legend = null;
 Text title = null;
+Text popup = null;
 Text subtitle = null;
 
 String xCol, yCol;
 int state = 0;
 
+float displayFractionWidth, displayFractionHeight, titleHeight, xAxisH, xAxisW, yAxisH, yAxisW;;
+
 
 void setup(){
   size(1000,700);  
+  
+  titleHeight = 80;
+  xAxisH = 50;
+  yAxisW = 100;
+  xAxisW = width - yAxisW*2;
+  yAxisH = height - titleHeight - xAxisH;
+  
   selectInput("Select a file to process:", "fileSelected");
 }
 
@@ -51,15 +61,15 @@ void fileSelected(File selection) {
     
     //chart title
     title = new Text(selection.getName(), 0);
-    title.setPosition(0, 0, width, 50);
+    title.setPosition( 0, 0, width, titleHeight );
     
     //subtitle
     subtitle = new Text("Press any key to change view", 0);
-    subtitle.setPosition(0, 50, width, 50);
+    subtitle.setPosition(0, titleHeight/3, width, titleHeight);
     subtitle.setTitleSize(16);
     
     //color legebnd for x axis
-    legend = new Axis(myTable, yCol);
+    //legend = new Axis(myTable, yCol);
     
     //set hue range from c1 to c2 to use to show x value increasing as color gets more red
     colorMode(HSB, 360, 100, 100);
@@ -91,7 +101,7 @@ void draw(){
   
   if( scatter != null ){
      scatter.draw();
-     scatter.drawBorder();
+     //scatter.drawBorder();
   }
   
   if( title != null ){  
@@ -108,7 +118,9 @@ void draw(){
      yAxis.drawDistributedY(6);
      yAxis.draw();
   }
-
+  if ( popup != null ){
+    popup.draw();
+  }
   if( xAxis != null ){
        
      xAxis.setPosition( 100, height - 100, width - 200, 100);
@@ -122,7 +134,7 @@ void draw(){
 
 //switch column to display when any key pressed
 void keyPressed(){
-  
+  popup = null;
   
   if (state == 0){
     state = 1;
@@ -130,6 +142,8 @@ void keyPressed(){
     scatter.setYCol(myTable.getColumnTitles()[3]);
     xAxis.setCol(myTable.getColumnTitles()[2]);
     yAxis.setCol(myTable.getColumnTitles()[3]);
+    xCol = myTable.getColumnTitles()[2];
+    yCol = myTable.getColumnTitles()[3];
   }
   else{
     state = 0;
@@ -137,14 +151,30 @@ void keyPressed(){
     scatter.setYCol(myTable.getColumnTitles()[1]);
     xAxis.setCol(myTable.getColumnTitles()[0]);
     yAxis.setCol(myTable.getColumnTitles()[1]);
+    xCol = myTable.getColumnTitles()[0];
+    yCol = myTable.getColumnTitles()[1];
   }
  
   
 }
 
-void mousePressed(){
+void mousePressed(){ 
 
-}
+  if (scatter.getPointList() != null){
+    for (Point p: scatter.getPointList()){
+      if(p.mouseInside()) {
+       
+        noLoop();
+        String text = String.format("%s, %s: %.2f, %.2f", xCol, yCol, p.datax, p.datay);
+        popup = new Text(text, 0);
+        popup.setPosition( 0, (titleHeight/3) * 2, width, titleHeight);
+        popup.setTitleSize(14);
+        loop();
+      }
+    }
+  }
+    
+} 
 
 
 void mouseReleased(){
@@ -155,18 +185,25 @@ void mouseReleased(){
 
 abstract class Frame {
   
-  int u0,v0,w,h;
+  float u0,v0,w,h;
   int clickBuffer = 2;
   //set sizes here
   int axisFontSize = 11;
   int axisTitleFontSize = 16;
-  int titleFontSize = 32;
+  int titleFontSize = 24;
   int subtitleFontSize = 16;
   int pointLabelFontSize = 16;
   int pointSize = 6;
   
   void setTitleSize(int newSize){
     titleFontSize = newSize;
+  }
+  
+  void setPosition( float u0, float v0, float w, float h ){
+    this.u0 = u0;
+    this.v0 = v0;
+    this.w = w;
+    this.h = h;
   }
   
   void setPosition( int u0, int v0, int w, int h ){

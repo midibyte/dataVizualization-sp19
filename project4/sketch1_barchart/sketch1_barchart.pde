@@ -1,12 +1,25 @@
 import java.util.Arrays;
 import java.util.List;
+import java.util.Comparator;
 import java.util.Collections;
 import java.util.Set;
 import java.util.HashSet;
 
+
+//used to sort points by x coord with custom comparator
+public class BarCompare implements Comparator<Bar> {
+ 
+  @Override
+  public int compare(Bar b1, Bar b2) {
+    //return p1.x.compareTo(p2.x); 
+    return Float.compare(b1.origX, b2.origX);
+  }
+  
+}
+
 int X_AXIS = 1;
 int Y_AXIS = 2;
-int state = 0;
+int state = 1;
 
 Table myTable = null;
 Barchart chart = null;
@@ -46,7 +59,7 @@ void fileSelected(File selection) {
     displayDataCol = myTable.getColumnTitles()[2];
     nameCol = myTable.getColumnTitles()[3];
     
-    chart = new Barchart( myTable, displayDataCol );
+    chart = new Barchart( myTable, displayDataCol, xLabelCol );
     chart.setPosition( yAxisW, titleHeight, xAxisW, yAxisH);
     //creates the point list used to place the labels
     chart.setupPointList();  
@@ -140,7 +153,7 @@ void mousePressed(){
       if(b.mouseInside()) {
        
         noLoop();
-        String text = String.format("%s: %.2f",myTable.getColumnTitles()[1], b.origVal);
+        String text = String.format("%s, %s: %.2f, %.2f", displayDataCol, xLabelCol, b.origX, b.origY);
         popup = new Text(text, 0);
         popup.setPosition( 0, (titleHeight/3) * 2, width,titleHeight);
         popup.setTitleSize(14);
@@ -166,13 +179,13 @@ void keyPressed(){
     state = 1;
     //set data to display from the table
     xLabelCol = myTable.getColumnTitles()[0];
-    displayDataCol = myTable.getColumnTitles()[1];
+    displayDataCol = myTable.getColumnTitles()[2];
     //nameCol = myTable.getColumnTitles()[3];
   }
   else{
     state = 0;
     //set data to display from the table
-    xLabelCol = myTable.getColumnTitles()[2];
+    xLabelCol = myTable.getColumnTitles()[1];
     displayDataCol = myTable.getColumnTitles()[3];
     //nameCol = myTable.getColumnTitles()[3];
     
@@ -180,7 +193,7 @@ void keyPressed(){
     
 
     
-    chart = new Barchart( myTable, displayDataCol );
+    chart = new Barchart( myTable, displayDataCol, xLabelCol );
     chart.setPosition( yAxisW, titleHeight, xAxisW, yAxisH);
     //creates the point list used to place the labels
     chart.setupPointList();
@@ -206,7 +219,7 @@ abstract class Frame {
   float u0,v0,w,h;
   int clickBuffer = 2;
   //set sizes here
-  int axisFontSize = 14;
+  int axisFontSize = 9;
   int axisTitleFontSize = 16;
   int titleFontSize = 20;
   int subtitleFontSize = 16;

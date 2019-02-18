@@ -2,7 +2,7 @@ import java.util.Arrays;
 import java.util.List;
 
 Table myTable = null;
-
+Table trimmedTable = null;
 //lists to hold each scatter plot cell, legend, and axis markings
 ArrayList<ScatterPlot> scatterPlots = null;
 ArrayList<Axis> xAxes = null;
@@ -13,6 +13,7 @@ ArrayList<Axis> yAxesRight = null;
 ScatterPlot popup = null;
 Axis popupXAxis = null;
 Axis popupYAxis = null;
+Text subtitle = null;
 
 int X_AXIS = 1;
 int Y_AXIS = 2;
@@ -47,6 +48,20 @@ void fileSelected(File selection) {
     
       println("User selected " + selection.getAbsolutePath());
       myTable = loadTable( selection.getAbsolutePath(), "header" );
+      
+      trimmedTable = loadTable( selection.getAbsolutePath(), "header" );
+      
+      for (int x = 0; x < trimmedTable.getColumnCount(); x++){
+       
+        if(Float.isNaN(trimmedTable.getFloat(3, myTable.getColumnTitles()[x])) )  
+          {
+           myTable.removeColumn(myTable.getColumnTitles()[x]);
+           println("col: " + x + " is nan");
+            
+          }
+
+      }
+      
       
       scatterPlots = new ArrayList<ScatterPlot>();
       yAxes = new ArrayList<Axis>();
@@ -83,6 +98,8 @@ void fileSelected(File selection) {
       //setup positions and values for x axis labels and color legends
       for (int x = 0; x < myTable.getColumnCount(); x++){
        
+        //if ( myTable.getColumnType(x) == Table.STRING) continue;
+        
         Axis temp = new Axis(myTable, myTable.getColumnTitles()[x]);
         Axis legend = new Axis(myTable, myTable.getColumnTitles()[x]);
         
@@ -104,6 +121,8 @@ void fileSelected(File selection) {
           //size of each plot
           float cellWidth = ( splom_w / myTable.getColumnCount() ) - spacing;
           float cellHeight = ( splom_h / myTable.getColumnCount() ) - spacing;
+          
+          //if ( myTable.getColumnType(x) == Table.STRING || myTable.getColumnType(y) == Table.STRING) continue;
           
           ScatterPlot temp = new ScatterPlot( myTable, myTable.getColumnTitles()[x], myTable.getColumnTitles()[y]);
           
@@ -128,6 +147,11 @@ void fileSelected(File selection) {
       title = new Text(selection.getName(), 0);
       title.setPosition(0, 0, width, titleHeight);
       //prevent drawing before arraylist is filled
+      
+      //subtitle
+      subtitle = new Text("Click any point to see value, press any key to change view", 0);
+      subtitle.setPosition(0, titleHeight/2, width, titleHeight);
+      subtitle.setTitleSize(16);  
       loop();
   }
 }
@@ -181,6 +205,11 @@ void draw(){
     title.draw();
     
   }
+  if (subtitle != null){
+   
+    subtitle.draw();
+    
+  }
   
   if (popup != null){
    
@@ -198,7 +227,7 @@ void draw(){
    
     //draw clicked frame larger
     popup.draw();
-    popupXAxis.drawDistributedX(4);
+    popupXAxis.drawDistributedX(5);
     popupXAxis.drawAxisTitleX();
     //popup.drawBorder();
   }
@@ -256,8 +285,9 @@ void mousePressed(){
         
         popupXAxis = new Axis(p.data, p.useX);
         popupXAxis.setPosition(splom_w/2 + verticalAxisWidth + popupAxisYW, titleHeight + popupH, popupAxisXW, popupAxisXH);
-        
+
         popupYAxis = new Axis(p.data, p.useY);
+        //popupYAxis.yAxis();
         popupYAxis.setPosition( splom_w/2 + verticalAxisWidth, titleHeight, popupAxisYW, popupAxisYH );
         break;
       }
@@ -287,6 +317,9 @@ abstract class Frame {
   int pointLabelFontSize = 16;
   int pointSize = 2;
   
+  void setTitleSize(int newSize){
+    titleFontSize = newSize;
+  } 
   void displayFalse(){
    
     display = false;

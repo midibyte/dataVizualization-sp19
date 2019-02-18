@@ -14,8 +14,13 @@ class Barchart extends Frame {
   ArrayList<String> uniqueNamesList = null;
   ArrayList<Integer> rgb = null;
   ArrayList<Bar> bars = null;
+  String xCol;
+  float barWidth = w / rows;
   
-  Barchart( Table _data, String _useColumn ) {
+  ArrayList<Bar> sortedBars = null;
+  
+  Barchart( Table _data, String _useColumn, String _xCol ) {
+    xCol = _xCol;
     data = _data;
     useColumn = _useColumn;              //will be label at bottom of chart
     rows = data.getRowCount();
@@ -135,12 +140,17 @@ class Barchart extends Frame {
         stroke(0);
       }
       
-      bars.add(new Bar( (u0 + (barWidth * i) ), ( v0 + h - adjustedHeight ), barWidth, adjustedHeight, data.getFloat( i, displayCol ) ) );
+      bars.add(new Bar( (u0 + (barWidth * i) ), ( v0 + h - adjustedHeight ), barWidth, adjustedHeight, data.getFloat( i, displayCol ), data.getFloat( i, xCol ) ) );
+      
       
       //rect(u0 + (barWidth * i), v0+h - adjustedHeight, barWidth, adjustedHeight);
       
     }
-    
+    sortedBars = new ArrayList<Bar>(bars);
+      
+      Collections.sort(bars, new BarCompare());
+      
+      bars = sortedBars;
     
   }
   
@@ -149,9 +159,23 @@ class Barchart extends Frame {
   void draw() {  
  
     if(bars != null){
-     
-      for (Bar b: bars){
-        b.draw(); 
+      float barWidth = w / rows;
+      //for (Bar b: bars){
+        
+      //  b.setX(barWidth * bars.indexOf(b));
+        
+      //  b.draw(); 
+      //}
+      for (int i = 0; i < bars.size(); i++){
+        
+        Bar b = bars.get(i);
+        
+        //b.setX(u0 + (barWidth *i) );
+        rectMode(CORNER);
+        fill(100);
+        stroke(0);
+        rect(u0 + (barWidth *i), b.y, b.w, b.h);
+        //b.draw(); 
       }
       
     }

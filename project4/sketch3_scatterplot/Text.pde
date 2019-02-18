@@ -26,7 +26,7 @@ class Text extends Frame {
       //fill( 255 );
       textSize( titleFontSize );
       fill(0, 102, 153, 204);
-      textAlign( CENTER, CENTER );    
+      textAlign( CENTER, TOP );    
       pushMatrix();
       translate( u0 + (w/2), v0 + (h/2) );
       rotate(rotationVal);

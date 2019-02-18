@@ -2,7 +2,7 @@ public class Bar{
   float x, y, w, h;
   color barColor;
   int clickBuffer = 2;
-  float origVal;
+  float origX, origY;
   Bar(float _x, float _y, float _w, float _h){
    
     x = _x;
@@ -21,19 +21,22 @@ public class Bar{
     
   }
   
-  Bar(float _x, float _y, float _w, float _h, float _origVal){
+  Bar(float _x, float _y, float _w, float _h, float _origX, float _origY){
    
     x = _x;
     y = _y;
     w = _w;
     h = _h;
-    origVal = _origVal;
+    origX = _origX;
+    origY = _origY;
     
   }
   
   boolean mouseInside(){
      return (x -clickBuffer < mouseX) && (x +w+clickBuffer)>mouseX && (y -clickBuffer)< mouseY && (y+h+clickBuffer)>mouseY; 
   }
+  
+  void setX(float _x) { x = _x; }
   
   void draw(){
     rectMode(CORNER);
