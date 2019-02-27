@@ -5,20 +5,76 @@ class ParallelCoordinatesPlot extends Frame{
   float[] max;
   float[] min;
   ArrayList<Line> lines = null;
-  
+  int noLines = 0;
+  int sortCol = 0;
+  ArrayList<Line> highlightedLines = new ArrayList<Line>();
   
   ParallelCoordinatesPlot(Table _data){
    
     data = _data;
-    data.sort(0);
+    //sort the table by the first column;
+    data.sort(sortCol);
+  }
+  
+  void clearHighlighedLines(){
+   
+    highlightedLines = new ArrayList<Line>();
+    
+  }
+  
+  void keyPressed(){
+   
+    if (noLines == 0) noLines = 1;
+    else noLines = 0;
+    
+  }
+  
+  void mousePressed(){
+   
+    for (Line l: lines){
+     
+      if (l.mouseInside() ) {
+        
+        
+        if(highlightedLines.contains(l)) highlightedLines.remove(l);
+        else highlightedLines.add(l);
+      }
+      
+    }
+    
+  }
+  
+  void changeSortCol(){
+   
+    sortCol =+ 1;
+    if ( sortCol >= data.getColumnCount() ) sortCol = 0;
+    
+    data.sort(sortCol);
+    axes = null;
+    lines = null;
+    setupAxes();
+    setupLines();
   }
   
   void draw(){
    
 
+
     if(lines != null){
       for(Line l: lines){ 
+        if(noLines == 1) l.noLines();
+        else l.yesLinesPlease();
         l.draw();
+        
+      }
+    }
+    
+    if(lines != null){
+      for(Line l: highlightedLines){ 
+        if(noLines == 1) l.noLines();
+        else l.yesLinesPlease();
+        l.drawHighlighted();
+        
       }
     }
     
@@ -55,6 +111,7 @@ class ParallelCoordinatesPlot extends Frame{
   
   
   void setupAxes(){
+    noLoop();
     float axisW, axisH;
     axisW = 50;
     axes = new ArrayList<Axis>();
@@ -69,6 +126,7 @@ class ParallelCoordinatesPlot extends Frame{
       temp.yAxis();
       axes.add(temp);
     }
+    loop();
     
   }
   
@@ -91,7 +149,7 @@ class ParallelCoordinatesPlot extends Frame{
           float x, y;
           //map(value, start1, stop1, start2, stop2)
           y = map( data.getFloatColumn(i)[j], min(data.getFloatColumn(i)), max(data.getFloatColumn(i)), v0 + h, v0 );
-          x = u0 + (spacing * w * i) - u0;
+          x = u0 + (spacing * w * i);
           
           temp.addPt(x, y);
           
@@ -104,8 +162,8 @@ class ParallelCoordinatesPlot extends Frame{
           
           float x, y;
           //map(value, start1, stop1, start2, stop2)
-          y = map( data.getFloatColumn(i)[j], min(data.getFloatColumn(i)), max(data.getFloatColumn(i)), v0 + w, v0 );
-          x = u0 + (spacing * w * i) - u0;
+          y = map( data.getFloatColumn(i)[j], min(data.getFloatColumn(i)), max(data.getFloatColumn(i)), v0 + h, v0 );
+          x = u0 + (spacing * w * i);
           
           temp.addPt(x, y);
           

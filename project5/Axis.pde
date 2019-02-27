@@ -104,7 +104,9 @@ class Axis extends Frame {
     rectMode( CENTER );
     textAlign( RIGHT, CENTER );
     textSize( axisFontSize );
-    fill(0);
+    textFont(createFont("Arial Bold", axisFontSize));
+    fill(0, 102, 153, 204);
+    
     
     for ( int i = 0; i <= numbers.length; i++ ){
       
@@ -115,6 +117,7 @@ class Axis extends Frame {
       
     }
     
+    noFill();
     
   }
   
@@ -126,7 +129,8 @@ class Axis extends Frame {
     rectMode( CENTER );
     textAlign( CENTER, CENTER );
     textSize( axisFontSize );
-    fill(0);
+    textFont( createFont("Arial Bold", axisFontSize) );
+    
     
     float h_interval = h / count;
     float yPos = v0 + h;  //set starting  y coord
@@ -139,15 +143,26 @@ class Axis extends Frame {
       String text = String.format("%.2f", displayNum);
       
       //draw text with room for axis  lines
+      //use to make text more visible
+      fill(255);
+      text( text, u0 + w/2 +1, yPos );
+      text( text, u0 + w/2 -1, yPos );
+      text( text, u0 + w/2, yPos +1 );
+      text( text, u0 + w/2, yPos -1 );
+      fill(255, 0, 150);
       text( text, u0 + w/2, yPos );
-      
-      line(u0 + w, yPos, u0 + w - axisFontSize, yPos);
+      strokeWeight(3);
+      stroke(255, 0, 150);
+      line(u0 + w, yPos, u0 + w - axisFontSize/2, yPos);
       
       //update yPos
       yPos -= h_interval;
       
       
     }
+    strokeWeight(1);
+    noStroke();
+    noFill();
     
   }
   
@@ -263,12 +278,18 @@ class Axis extends Frame {
      x = u0 + w/4;
      y = v0 + h/2;
      textSize( axisTitleFontSize );
-     fill(0);
-     fill(0, 102, 153, 204);
+     
+     
      pushMatrix();
      translate(x,y);
      rotate(rotateAmount);
      textAlign(CENTER, CENTER);
+     fill(255);
+     text(useColumn,0-1,0);
+     text(useColumn,0,0-1);
+     text(useColumn,0,0+1);
+     text(useColumn,0+1,0);
+     fill(255, 0, 150);
      text(useColumn,0,0);
      popMatrix();
      
