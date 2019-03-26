@@ -29,6 +29,8 @@ Table myTable = null;
 ScatterPlot scatter = null;
 ParallelCoordinatesPlot PCP = null;
 Barchart bChart = null;
+Linechart lChart = null;
+Splom splom = null;
 
 Axis legend = null;
 Text title = null;
@@ -81,29 +83,45 @@ void fileSelected(File selection) {
     
     //setup PCP
     PCP = new ParallelCoordinatesPlot(myTable);
-    PCP.setPosition( 0, titleHeight, plotW * 2, plotH );
+    // 2/5 width, 1/2 height
+    PCP.setPosition( 0, titleHeight, plotW * 2, plotH/ 2 );
     PCP.setupAxes();
     PCP.setupLines();
     
 
     //setup scatter plot
     scatter = new ScatterPlot(myTable, xCol, yCol);
-    scatter.setPosition( plotW * 2, titleHeight, plotW, plotH / 2);
+    //below PCP 1/2 height
+    scatter.setPosition( 0, titleHeight + plotH/2, plotW, plotH / 2);
     //sets up point positions relative to position set with setPosition()
     scatter.setupPointList();
     //sets up colors with hue from 50 to 0 based on x value
     scatter.setColorsX();
     
-    //setup barchart
-    
-    Table sortedTable = loadTable( selection.getAbsolutePath(), "header" );
-    
-    sortedTable.sort(xCol);
-    
+    //setup barchart   
     bChart = new Barchart( myTable, yCol, xCol );
-    bChart.setPosition( plotW * 2, titleHeight + (plotH/2), plotW, plotH/2);
+    bChart.setPosition( plotW * 4, titleHeight, plotW, plotH/2);
     bChart.setupPointList(); 
     bChart.setupBars();
+    
+    
+    
+    //setup linechart
+    lChart = new Linechart( myTable, yCol, xCol );
+    //below PCP next to scatter plot
+    lChart.setPosition( plotW, titleHeight + plotH/2, plotW, plotH / 2 );
+    lChart.setupPointList();
+    
+    
+    //setup splom
+    splom = new Splom(myTable);
+    //void setupSplom(float spacing)
+    splom.setPosition(plotW * 2, titleHeight, plotW* 3, plotH);
+    splom.setupSplom(20);
+    
+    
+    
+    
   }
   
   
@@ -152,6 +170,13 @@ void draw(){
     bChart.draw();
   }
 
+  if ( lChart != null ){
+    lChart.draw();
+  }
+  if ( splom != null ){
+    splom.draw();
+    //splom.highlightFrame();
+  }
 }
 
 
@@ -168,6 +193,7 @@ void mouseReleased(){
 
 abstract class Frame {
   
+  boolean display = true;
   float u0,v0,w,h;
   int clickBuffer = 2;
   //set sizes here
@@ -181,6 +207,18 @@ abstract class Frame {
   void setTitleSize(int newSize){
     titleFontSize = newSize;
   } 
+
+  void displayFalse(){
+   
+    display = false;
+    
+  }
+  
+  void displayTrue(){
+   
+    display = true;
+    
+  }
 
   void setPosition( int u0, int v0, int w, int h ){
     this.u0 = u0;

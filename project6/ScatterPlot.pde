@@ -1,5 +1,5 @@
 public class ScatterPlot extends Frame{
-  
+  //creates its own axes
   Table data;
   //column to display on each column
   String useX, useY;
@@ -9,6 +9,11 @@ public class ScatterPlot extends Frame{
   
   Axis xAxis = null;
   Axis yAxis = null;
+  
+  boolean xAxisOn = true;
+  boolean yAxisOn = true;
+  
+  void noLabels() {xAxisOn = false; yAxisOn = false;}
   
   ScatterPlot(Table _data, String _useX, String _useY){
    
@@ -84,26 +89,23 @@ public class ScatterPlot extends Frame{
   }
   
   void draw(){
-    //println(points.size());
-    //println(dataX.length);
+
     if (points != null){
+
       //for (Point p: points){
+      //  //fill(0);
+      //  //colorMode(HSB, 360, 100, 100);
+      //  //fill( map( p.datax, min_x, max_x, 0, 255 ), 0, 0, map( p.datax, min_x, max_x, 0, 255 ) );
+      //  //stroke( map( p.datax, min_x, max_x, 0, 255 ), 0, 0, map( p.datax, min_x, max_x, 0, 255 ) );
         
       //  if (p.ptColor != -1){
       //    fill(p.ptColor);
       //    stroke(p.ptColor);
-      //    ellipse(p.x, p.y, pointSize, pointSize);
-      //  }
-      //  else{
-      //    fill(0);
-      //    stroke(0);
-      //    ellipse(p.x, p.y, pointSize, pointSize);
       //  }
         
-      //  //stroke(0);
-        
-        
+      //  ellipse(p.x, p.y, pointSize, pointSize);    
       //}
+      
       for (int i = 0; i < points.size(); i++){
         //println(i);
         //points.get(i).print();
@@ -124,7 +126,7 @@ public class ScatterPlot extends Frame{
         
       }
       
-      if( yAxis != null ){
+      if( yAxis != null && yAxisOn){
        
          yAxis.setPosition( u0 + 10, v0, 50, h);
          yAxis.yAxis();
@@ -133,7 +135,7 @@ public class ScatterPlot extends Frame{
       }
 
       
-      if( xAxis != null ){
+      if( xAxis != null && xAxisOn ){
            
          xAxis.setPosition( u0, v0, w - 10, 50);
          xAxis.drawDistributedX(2);

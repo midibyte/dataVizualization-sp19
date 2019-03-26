@@ -1,7 +1,7 @@
 public class Point {
   
   float x, y, datax, datay;
-  int ptColor = -1;
+  int ptColor = 0;
   float pointSize = 0;
   int clickBuffer = 6;
   float origX = 0; 
