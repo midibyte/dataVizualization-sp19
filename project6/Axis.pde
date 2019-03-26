@@ -137,7 +137,10 @@ class Axis extends Frame {
     float displayNum = min;
     
     for (int i = 0; i <= count; i++ ){
-
+      
+      //if(i == 0) textAlign( LEFT, CENTER );
+      //else textAlign( CENTER, CENTER );
+      
       displayNum = lerp(min, max, ( (float)i/count ) );
       
       String text = String.format("%.2f", displayNum);
@@ -149,11 +152,12 @@ class Axis extends Frame {
       text( text, u0 + w/2 -1, yPos );
       text( text, u0 + w/2, yPos +1 );
       text( text, u0 + w/2, yPos -1 );
-      fill(255, 0, 150);
+      //fill(255, 0, 150);
+      fill(0);
       text( text, u0 + w/2, yPos );
-      strokeWeight(3);
-      stroke(255, 0, 150);
-      line(u0 + w, yPos, u0 + w - axisFontSize/2, yPos);
+      //strokeWeight(3);
+      //stroke(255, 0, 150);
+      //line(u0 + w, yPos, u0 + w - axisFontSize/2, yPos);
       
       //update yPos
       yPos -= h_interval;
@@ -218,7 +222,7 @@ class Axis extends Frame {
       if (i == 0) {
         textAlign(LEFT, CENTER); 
       }
-      if (i == count) {
+      else if (i == count) {
         textAlign(RIGHT, CENTER); 
       }
       else {
@@ -271,18 +275,20 @@ class Axis extends Frame {
     
   }
   
+  //draw title on top of axis
   void drawAxisTitle() {
      //y axis
      float x, y;
      
-     x = u0 + w/4;
-     y = v0 + h/2;
+     x = u0 + w/2;
+     //y = v0 + h/2;
+     y = v0 - axisTitleFontSize;
      textSize( axisTitleFontSize );
      
      
      pushMatrix();
      translate(x,y);
-     rotate(rotateAmount);
+     //rotate(rotateAmount);
      textAlign(CENTER, CENTER);
      fill(255);
      text(useColumn,0-1,0);
@@ -299,8 +305,10 @@ class Axis extends Frame {
      //x axis
      float x, y;
      
+     //place in middle
      x = u0 + w/2;
      y = v0 + ( h/4 * 3 );    //place at bottom quarter
+     y = v0;
      textSize( axisTitleFontSize );
      fill(0);
      fill(0, 102, 153, 204);

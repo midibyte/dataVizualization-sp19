@@ -47,13 +47,15 @@ class Line{
     
   }
   
+  //draw with some transparency to see overlap
   void draw(){
-   
+   colorMode(HSB, 360, 100, 100);
     if (noLines == 1) {
      
       //beginShape();
       noFill();
-      stroke(0, 0, 0, 170);
+      //stroke(0, 0, 0, 80);
+      stroke(230, 100, 100, 80);
       for (PVector p: points){
         //vertex(p.x, p.y);
         ellipse(p.x, p.y, 6, 6);
@@ -66,7 +68,8 @@ class Line{
      
       beginShape();
       noFill();
-      stroke(0, 0, 0, 170);
+      //stroke(0, 0, 0, 80);
+      stroke(230, 100, 100, 80);
       for (PVector p: points){
         vertex(p.x, p.y);
         ellipse(p.x, p.y, 6, 6);
@@ -75,6 +78,7 @@ class Line{
       noFill();
       noStroke();
     }
+    colorMode(RGB, 255, 255, 255);
   }
   
   //check all points in the line to see if inside any point

@@ -128,7 +128,7 @@ public class ScatterPlot extends Frame{
       
       if( yAxis != null && yAxisOn){
        
-         yAxis.setPosition( u0 + 10, v0, 50, h);
+         yAxis.setPosition( u0 , v0, 50, h);
          yAxis.yAxis();
          yAxis.drawDistributedY(6);
          yAxis.draw();
@@ -136,10 +136,10 @@ public class ScatterPlot extends Frame{
 
       
       if( xAxis != null && xAxisOn ){
-           
-         xAxis.setPosition( u0, v0, w - 10, 50);
-         xAxis.drawDistributedX(2);
-         //xAxis.drawDistributed();
+         // +4 aligns left side with y axis  
+         xAxis.setPosition( u0 + 4, v0 + h + 10, w - 10, 50);
+         xAxis.drawDistributedX(3);
+         
          xAxis.draw();
       }
     

@@ -72,6 +72,8 @@ void fileSelected(File selection) {
     c2 = color(230, 100, 100);
     colorMode(RGB, 255, 255, 255);
     
+    int spacingY = 30;
+    
     //columns to use on x and y axes
     xCol = myTable.getColumnTitles()[0];
     yCol = myTable.getColumnTitles()[1];
@@ -84,7 +86,7 @@ void fileSelected(File selection) {
     //setup PCP
     PCP = new ParallelCoordinatesPlot(myTable);
     // 2/5 width, 1/2 height
-    PCP.setPosition( 0, titleHeight, plotW * 2, plotH/ 2 );
+    PCP.setPosition( 0 + 50, titleHeight, plotW * 2 - 50, plotH/ 2 );
     PCP.setupAxes();
     PCP.setupLines();
     
@@ -92,7 +94,8 @@ void fileSelected(File selection) {
     //setup scatter plot
     scatter = new ScatterPlot(myTable, xCol, yCol);
     //below PCP 1/2 height
-    scatter.setPosition( 0, titleHeight + plotH/2, plotW, plotH / 2);
+    //scatter.setPosition( 0, titleHeight + plotH/2 + spacingY, plotW, (plotH/2 )- spacingY*2);
+    scatter.setPosition( plotW * 3 + plotW/2, titleHeight + spacingY, plotW + plotW/4, (plotH/2) - spacingY*2);
     //sets up point positions relative to position set with setPosition()
     scatter.setupPointList();
     //sets up colors with hue from 50 to 0 based on x value
@@ -100,7 +103,8 @@ void fileSelected(File selection) {
     
     //setup barchart   
     bChart = new Barchart( myTable, yCol, xCol );
-    bChart.setPosition( plotW * 4, titleHeight, plotW, plotH/2);
+    //bChart.setPosition( plotW * 4, titleHeight, plotW, plotH/2);
+    bChart.setPosition( 0, titleHeight + plotH/2 + spacingY, plotW, (plotH/2 )- spacingY*2);
     bChart.setupPointList(); 
     bChart.setupBars();
     

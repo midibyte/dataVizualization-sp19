@@ -122,7 +122,8 @@ class ParallelCoordinatesPlot extends Frame{
       float spacing = 1 / (float)(numCols - 1);
       println("x, adjustment: " + (spacing) + "\n");
       Axis temp = new Axis(data, data.getColumnTitles()[i] );
-      temp.setPosition(u0 + (spacing * w * i) - 50, v0, axisW, h);
+      if (i == 0) temp.setPosition(u0 + (spacing * w * i) - 50, v0, axisW, h);
+      else temp.setPosition(u0 + (spacing * w * i) - 50, v0, axisW, h);
       temp.yAxis();
       axes.add(temp);
       ////center of text box is the point given

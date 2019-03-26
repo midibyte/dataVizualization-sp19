@@ -17,6 +17,12 @@ class Barchart extends Frame {
   String xCol;
   float barWidth = w / rows;
   
+  Axis xAxis = null;
+  Axis yAxis = null;
+  
+  boolean xAxisOn = true;
+  boolean yAxisOn = true;
+  
   ArrayList<Bar> sortedBars = null;
   
   Barchart( Table _data, String _useColumn, String _xCol ) {
@@ -38,6 +44,11 @@ class Barchart extends Frame {
     //start at 0
     dataMin = 0;
     dataMax = Collections.max(barData);
+    
+    //axis markings
+    //yAxis = new Axis(myTable, useColumn);
+    xAxis = new Axis(myTable, xCol);
+    
   }
   
   void setColumn( String _useColumn ){
@@ -160,6 +171,22 @@ class Barchart extends Frame {
         b.draw(); 
       }
   
+    }
+    if( yAxis != null && yAxisOn){
+     
+       yAxis.setPosition( u0 , v0, 50, h);
+       yAxis.yAxis();
+       yAxis.drawDistributedY(6);
+       yAxis.draw();
+    }
+
+    
+    if( xAxis != null && xAxisOn ){
+       // +4 aligns left side with y axis  
+       xAxis.setPosition( u0 + 4, v0 + h + 10, w - 10, 50);
+       xAxis.drawDistributedX(3);
+       
+       xAxis.draw();
     }
   
   }
