@@ -197,7 +197,7 @@ abstract class Frame {
   float u0,v0,w,h;
   int clickBuffer = 2;
   //set sizes here
-  int axisFontSize = 9;
+  int axisFontSize = 12;
   int axisTitleFontSize = 16;
   int titleFontSize = 20;
   int subtitleFontSize = 16;

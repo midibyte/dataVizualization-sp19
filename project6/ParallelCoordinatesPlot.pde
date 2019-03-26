@@ -125,6 +125,12 @@ class ParallelCoordinatesPlot extends Frame{
       temp.setPosition(u0 + (spacing * w * i) - 50, v0, axisW, h);
       temp.yAxis();
       axes.add(temp);
+      ////center of text box is the point given
+      //rectMode( CENTER );
+      //textAlign( CENTER , CENTER );
+      //textSize( axisFontSize );
+      //fill(0);
+      //text(data.getColumnTitles()[i], u0 + (spacing * w * i) - 50, v0, axisW, h);
     }
     loop();
     
