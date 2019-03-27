@@ -87,7 +87,7 @@ void fileSelected(File selection) {
     title.setPosition( 0, 0, width, titleHeight );
   
     //chart title
-    subtitle = new Text("Click in splom to change views, click on points to highlight across views", 0);
+    subtitle = new Text("Click in splom to change views, click on points to highlight across views, press c to clear selection", 0);
     subtitle.setPosition( 0, titleHeight/3, width, titleHeight/2 );
     
     //setup PCP
