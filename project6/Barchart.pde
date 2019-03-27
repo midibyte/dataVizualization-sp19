@@ -17,6 +17,8 @@ class Barchart extends Frame {
   String xCol;
   float barWidth = w / rows;
   
+  ArrayList<Bar> highlightedBars = new ArrayList<Bar>();
+  
   Axis xAxis = null;
   Axis yAxis = null;
   
@@ -47,9 +49,13 @@ class Barchart extends Frame {
     
     //axis markings
     //yAxis = new Axis(myTable, useColumn);
-    xAxis = new Axis(myTable, xCol);
+    xAxis = new Axis(myTable, useColumn);
     
   }
+  
+  void clearHighlight() { highlightedBars.clear(); }
+  
+  ArrayList<Point> getPointList() {return points;}
   
   void setColumn( String _useColumn ){
     useColumn = _useColumn;
@@ -167,8 +173,9 @@ class Barchart extends Frame {
  
     if(bars != null){
       for (Bar b: bars){
-        
+        //if(highlightedBars.contains(b)) {b.drawHighlighted();}
         b.draw(); 
+        if(highlightedBars.contains(b)) {b.drawHighlighted();}
       }
   
     }
@@ -221,8 +228,46 @@ class Barchart extends Frame {
     
     
   }
-
-  void mousePressed() {  }
+  void addHighlightFromOrig(float x, float y){
+    //println("xy " + x + y);
+    if (bars != null){
+      for (Bar b: bars){
+        //println(p.origX);
+        if(b.origX == x && b.origY == y) { 
+          println("found match");
+          if (highlightedBars.contains(b) ) break;
+          //b.print();
+          highlightedBars.add(b); 
+          break;
+        }
+      }
+    }
+  }
+  void addHighlightFromOrig(float y){
+    //println("xy " + x + y);
+    if (bars != null){
+      for (Bar b: bars){
+        //println(p.origX);
+        if(b.origY == y) { 
+          println("found match");
+          if (highlightedBars.contains(b) ) break;
+          //b.print();
+          highlightedBars.add(b); 
+          break;
+        }
+      }
+    }
+  }
+  void mousePressed() {
+    
+    for(Bar b: bars){
+      if(b.mouseInside()) {
+        //println("inside bar" + b.origX);
+        highlightedBars.add(b);
+      }
+    }
+    
+  }
 
   void mouseReleased() {   }
   

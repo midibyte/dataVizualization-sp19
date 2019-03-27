@@ -3,6 +3,8 @@ class Line{
   
   int noLines = 0;
   boolean highlighted;
+  ArrayList<Float>  origYVals = new ArrayList<Float>();
+  //ArrayList<Float>  origXVals = new ArrayList<Float>();
   
   void noLines(){
     noLines = 1;
@@ -11,7 +13,9 @@ class Line{
   
   Line(){ points = new ArrayList<PVector>();}
   
-  void addPt(float x, float y){
+  void addPt(float x, float y, float origY){
+    //origXVals.add(origX);
+    origYVals.add(origY);
     points.add( new PVector(x, y) );
   }
   
@@ -19,7 +23,7 @@ class Line{
    
     if (noLines == 1) {
       
-      stroke(0, 240, 0);
+      stroke(255, 0, 0);
       strokeWeight(3);
       for (PVector p: points){
         //vertex(p.x, p.y);
@@ -33,7 +37,7 @@ class Line{
     else{
      
       beginShape();
-      stroke(0, 240, 0);
+      stroke(255, 0, 0);
       strokeWeight(3);
       for (PVector p: points){
         vertex(p.x, p.y);

@@ -12,8 +12,15 @@ public class ScatterPlot extends Frame{
   
   boolean xAxisOn = true;
   boolean yAxisOn = true;
+  boolean xTitleOnly = false;
+  boolean yTitleOnly = false;
+  
+  ArrayList<Point> highlightedPoints = new ArrayList<Point>();
+  void clearHighlight() { highlightedPoints.clear(); }
   
   void noLabels() {xAxisOn = false; yAxisOn = false;}
+  void xTitleOnly() {xTitleOnly = true;}
+  void yTitleOnly() {yTitleOnly = true;}
   
   ScatterPlot(Table _data, String _useX, String _useY){
    
@@ -21,8 +28,8 @@ public class ScatterPlot extends Frame{
     useX = _useX;
     useY = _useY;
     //axis markings
-    yAxis = new Axis(myTable, useX);
-    xAxis = new Axis(myTable, useY);
+    yAxis = new Axis(myTable, useY);
+    xAxis = new Axis(myTable, useX);
 
     
   }
@@ -31,6 +38,37 @@ public class ScatterPlot extends Frame{
   void setYCol(String _useY) { useY = _useY; setupPointList(); setColorsX(); }
   
   ArrayList<Point> getPointList() {return points;}
+  
+  void addHighlightFromOrig(float x, float y){
+    //println("xy " + x + y);
+    if (points != null){
+      for (Point p: points){
+        //println(p.origX);
+        if(p.origX == x && p.origY == y) { 
+          println("found match");
+          if (highlightedPoints.contains(p) ) break;
+          p.print();
+          highlightedPoints.add(p); 
+          break; 
+        }
+      }
+    }
+  }
+  void addHighlightFromOrig(float y){
+    //println("xy " + x + y);
+    if (points != null){
+      for (Point p: points){
+        //println(p.origX);
+        if( p.origY == y) { 
+          println("found match");
+          if (highlightedPoints.contains(p) ) break;
+          p.print();
+          highlightedPoints.add(p); 
+          break; 
+        }
+      }
+    }
+  }
   
   void setupPointList() {  
 
@@ -92,19 +130,6 @@ public class ScatterPlot extends Frame{
 
     if (points != null){
 
-      //for (Point p: points){
-      //  //fill(0);
-      //  //colorMode(HSB, 360, 100, 100);
-      //  //fill( map( p.datax, min_x, max_x, 0, 255 ), 0, 0, map( p.datax, min_x, max_x, 0, 255 ) );
-      //  //stroke( map( p.datax, min_x, max_x, 0, 255 ), 0, 0, map( p.datax, min_x, max_x, 0, 255 ) );
-        
-      //  if (p.ptColor != -1){
-      //    fill(p.ptColor);
-      //    stroke(p.ptColor);
-      //  }
-        
-      //  ellipse(p.x, p.y, pointSize, pointSize);    
-      //}
       
       for (int i = 0; i < points.size(); i++){
         //println(i);
@@ -119,6 +144,13 @@ public class ScatterPlot extends Frame{
           fill(0);
           stroke(0);
           ellipse(points.get(i).x, points.get(i).y, pointSize, pointSize);
+        }
+        
+        if(highlightedPoints.contains(points.get(i))){
+          fill(255, 0, 0);
+          stroke(255, 0, 0);
+          ellipse(points.get(i).x, points.get(i).y, pointSize *2, pointSize *2);
+          //println("drawing highlighted point");
         }
         
         //stroke(0);
@@ -142,8 +174,28 @@ public class ScatterPlot extends Frame{
          
          xAxis.draw();
       }
+      
+      if(xTitleOnly){
+        xAxis.setPosition( u0 + 4, v0 + h + 10, w - 10, 50);
+        xAxis.draw();
+      }
+      if(yTitleOnly){
+        yAxis.setPosition( u0 , v0 + h/2, 50, h);
+        yAxis.yAxis();
+        yAxis.draw();
+      }
+      
     
     }
   }
-  
+  void mousePressed() {
+    
+    for(Point p: points){
+      if(p.mouseInside()) {
+        //println("inside bar" + b.origX);
+        highlightedPoints.add(p);
+      }
+    }
+    
+  }
 }

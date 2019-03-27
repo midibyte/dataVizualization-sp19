@@ -17,6 +17,30 @@ class Linechart extends Frame {
   boolean colors = false;
   ArrayList<String> uniqueNamesList = null;
   ArrayList<Integer> rgb = null;
+  
+  Axis xAxis = null;
+  Axis yAxis = null;
+  
+  boolean xAxisOn = true;
+  boolean yAxisOn = true;
+  
+  ArrayList<Point> highlightedPoints = new ArrayList<Point>();
+  void clearHighlight() { highlightedPoints.clear(); }
+  void addHighlightFromOrig(float x, float y){
+    //println("xy " + x + y);
+    if (points != null){
+      for (Point p: points){
+        //println(p.origX);
+        if(p.origX == x && p.origY == y) { 
+          println("found match");
+          //if (highlightedPoints.contains(p) ) break;
+          p.print();
+          highlightedPoints.add(p); 
+          break; 
+        }
+      }
+    }
+  }
 
   ArrayList<Point> sortedPoints = null;
 
@@ -43,6 +67,9 @@ class Linechart extends Frame {
     dataMin = Collections.min(barData);
     dataMax = Collections.max(barData);
 
+    yAxis = new Axis(myTable, useY);
+    xAxis = new Axis(myTable, useX);
+
   }
   
   ArrayList<Point> getPointList() { return points; }
@@ -63,6 +90,7 @@ class Linechart extends Frame {
     
     //creates points from data
     for (int i = 1; i < points.size(); i++){
+      stroke(0);
       Point p1 = points.get( i - 1);
       Point p2 = points.get( i );
       strokeWeight(1);
@@ -75,6 +103,22 @@ class Linechart extends Frame {
     }
     
     drawPoints();
+    if( yAxis != null && yAxisOn){
+     
+       yAxis.setPosition( u0 - 30 , v0, 50, h);
+       yAxis.yAxis();
+       yAxis.drawDistributedY(6);
+       yAxis.draw();
+    }
+
+    
+    if( xAxis != null && xAxisOn ){
+       // +4 aligns left side with y axis  
+       xAxis.setPosition( u0, v0 + h + 10, w - 10, 50);
+       xAxis.drawDistributedX(3);
+       
+       xAxis.draw();
+    }
     
   }
   
@@ -83,43 +127,30 @@ class Linechart extends Frame {
     for (int i = 0; i< points.size(); i++){
       
       Point p = points.get(i);
-      if (colors == false ) fill(0);
+      //if (colors == false ) fill(0);
       
-      else{
-        fill( rgb.get( uniqueNamesList.indexOf( names.get(i) ) ) );
-      }
+      if(highlightedPoints.contains(points.get(i))){
+          fill(255, 0, 0);
+          stroke(255, 0, 0);
+          ellipse(points.get(i).x, points.get(i).y, pointSize *2, pointSize *2);
+          //println("drawing highlighted point");
+        }
+       else fill(0);
+      
+      //else{
+      //  fill( rgb.get( uniqueNamesList.indexOf( names.get(i) ) ) );
+      //}
       
       ellipse(p.x, p.y, pointSize, pointSize);
       //reset fill
       noFill();
+      noStroke();
     }
     
   }
+
+
   
-  //void setupPointList() {  
-
-  //  points = new ArrayList<Point>();
-    
-  //  //width of each bar - use window width
-  //  float barWidth = w / rows;
-  //  //data column to use
-    
-  //  //first get point coordinates
-  //  for (int i = 0; i < data.getRowCount(); i++){
-
-  //    //map: value, current_start, current_end, target_start, target_end
-  //    float adjustedHeight = map( data.getFloat( i, displayCol ), dataMin, dataMax, 0, h );
-
-  //    //add point to point list
-  //    Point temp = new Point( (barWidth/2) + u0 + ( barWidth * i ), v0 + h - adjustedHeight );
-      
-  //    temp.setPointSize(pointSize);
-  //    temp.setOrigXY( data.getFloat( i, xCol ), data.getFloat( i, displayCol ));
-      
-  //    points.add( temp );
-
-  //  }
-  //}
   void setupPointList() {  
 
     //get data arrays from table
@@ -207,8 +238,32 @@ class Linechart extends Frame {
     
     
   }
+  void addHighlightFromOrig(float y){
+    //println("xy " + x + y);
+    if (points != null){
+      for (Point p: points){
+        //println(p.origX);
+        if( p.origY == y) { 
+          println("found match");
+          if (highlightedPoints.contains(p) ) break;
+          p.print();
+          highlightedPoints.add(p); 
+          break; 
+        }
+      }
+    }
+  }
 
-  void mousePressed() {  }
+  void mousePressed() {
+    
+    for(Point p: points){
+      if(p.mouseInside()) {
+        //println("inside bar" + b.origX);
+        highlightedPoints.add(p);
+      }
+    }
+    
+  }
 
   void mouseReleased() {   }
   

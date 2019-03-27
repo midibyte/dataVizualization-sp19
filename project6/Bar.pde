@@ -3,6 +3,7 @@ public class Bar{
   color barColor;
   int clickBuffer = 2;
   float origX, origY;
+  
   Bar(float _x, float _y, float _w, float _h){
    
     x = _x;
@@ -37,7 +38,12 @@ public class Bar{
   }
   
   void setX(float _x) { x = _x; }
-  
+  void drawHighlighted(){
+    rectMode(CORNER);
+    fill(255, 0, 0);
+    stroke(255, 0, 0);
+    rect(x, y, w, h);
+  }
   void draw(){
     rectMode(CORNER);
     fill(100);

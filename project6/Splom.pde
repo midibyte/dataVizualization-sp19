@@ -7,6 +7,8 @@ class Splom extends Frame {
     data = _data;
   }
   
+  ArrayList<ScatterPlot> getScatterPlots() {return scatterPlots;}
+  
   void draw(){
     if( scatterPlots != null){
     
@@ -56,6 +58,9 @@ class Splom extends Frame {
           if(x == y) temp.displayFalse();
           
           if(x > displayX) temp.displayFalse();
+          
+          if( y == myTable.getColumnCount() -1 ) temp.xTitleOnly();
+          if ( x == 0 ) temp.yTitleOnly();
           
           
           

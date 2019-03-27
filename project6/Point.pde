@@ -15,8 +15,8 @@ public class Point {
   Point(float _x, float _y, float _datax, float _datay ){
     x = _x;
     y = _y;
-    datax = _datax;
-    datay = _datay;
+    origX = _datax;
+    origY = _datay;
   }
   
   void setColor(int _color){

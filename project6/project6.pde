@@ -17,6 +17,7 @@ public class PointCompare implements Comparator<Point> {
 }
 
 
+
 int X_AXIS = 1;
 int Y_AXIS = 2;
 int state = 1;
@@ -36,6 +37,9 @@ Axis legend = null;
 Text title = null;
 Text popup = null;
 Text subtitle = null;
+
+int spacingY = 30;
+int spacingX = 30;
 
 String xCol, yCol;
 
@@ -72,7 +76,7 @@ void fileSelected(File selection) {
     c2 = color(230, 100, 100);
     colorMode(RGB, 255, 255, 255);
     
-    int spacingY = 30;
+    
     
     //columns to use on x and y axes
     xCol = myTable.getColumnTitles()[0];
@@ -82,6 +86,9 @@ void fileSelected(File selection) {
     title = new Text(selection.getName(), 0);
     title.setPosition( 0, 0, width, titleHeight );
   
+    //chart title
+    subtitle = new Text("Click in splom to change views, click on points to highlight across views", 0);
+    subtitle.setPosition( 0, titleHeight/3, width, titleHeight/2 );
     
     //setup PCP
     PCP = new ParallelCoordinatesPlot(myTable);
@@ -102,7 +109,7 @@ void fileSelected(File selection) {
     scatter.setColorsX();
     
     //setup barchart   
-    bChart = new Barchart( myTable, yCol, xCol );
+    bChart = new Barchart( myTable, xCol, yCol );
     //bChart.setPosition( plotW * 4, titleHeight, plotW, plotH/2);
     bChart.setPosition( 0, titleHeight + plotH/2 + spacingY, plotW, (plotH/2 )- spacingY*2);
     bChart.setupPointList(); 
@@ -113,7 +120,7 @@ void fileSelected(File selection) {
     //setup linechart
     lChart = new Linechart( myTable, yCol, xCol );
     //below PCP next to scatter plot
-    lChart.setPosition( plotW, titleHeight + plotH/2, plotW, plotH / 2 );
+    lChart.setPosition( plotW + spacingX, titleHeight + plotH/2 + spacingY, plotW - spacingX*2, plotH / 2 - spacingY*2);
     lChart.setupPointList();
     
     
@@ -183,8 +190,107 @@ void draw(){
   }
 }
 
+void clearAll(){
+  scatter.clearHighlight();
+  lChart.clearHighlight();
+  PCP.clearHighlight();
+  bChart.clearHighlight();
+}
+
+void keyPressed(){
+  if(key == 'c'){
+    
+    clearAll();
+  }
+}
 
 void mousePressed(){
+
+  //check which frame in the splom the mouse is inside then copy to larger frame
+  //popup = new ScatterPlot();
+  
+  ArrayList<ScatterPlot> scatterPlots = null;
+  if (splom != null) {scatterPlots = splom.getScatterPlots();}
+  
+  if(scatterPlots != null){
+    int count = 0;
+    for (ScatterPlot p: scatterPlots){
+      
+      count++;
+      if(p.mouseInside() && p.display == true){
+        clearAll();
+        noLoop();
+        
+        //setup scatter plot
+        scatter = new ScatterPlot(myTable, p.useX, p.useY);
+        //below PCP 1/2 height
+        //scatter.setPosition( 0, titleHeight + plotH/2 + spacingY, plotW, (plotH/2 )- spacingY*2);
+        scatter.setPosition( plotW * 3 + plotW/2, titleHeight + spacingY, plotW + plotW/4, (plotH/2) - spacingY*2);
+        //sets up point positions relative to position set with setPosition()
+        scatter.setupPointList();
+        //sets up colors with hue from 50 to 0 based on x value
+        scatter.setColorsX();
+        
+        println("clicked inside: " + count);
+        
+
+        //setup barchart   
+        bChart = new Barchart( myTable, p.useX, p.useY );
+        //bChart.setPosition( plotW * 4, titleHeight, plotW, plotH/2);
+        bChart.setPosition( 0, titleHeight + plotH/2 + spacingY, plotW, (plotH/2 )- spacingY*2);
+        bChart.setupPointList(); 
+        bChart.setupBars();
+        
+        
+        
+        //setup linechart
+        lChart = new Linechart( myTable, p.useY, p.useX );
+        //below PCP next to scatter plot
+        lChart.setPosition( plotW + spacingX, titleHeight + plotH/2 + spacingY, plotW - spacingX*2, plotH / 2 - spacingY*2);
+        lChart.setupPointList();
+        loop();
+        break;
+      }
+      loop();
+    }
+  }
+  
+  if(PCP.mouseInside()){
+    PCP.mousePressed();
+    for(Line l: PCP.highlightedLines){
+      for (Float f: l.origYVals){
+        scatter.addHighlightFromOrig(f);
+        lChart.addHighlightFromOrig(f);
+        bChart.addHighlightFromOrig(f);
+      }
+    }
+  }
+  
+  if (bChart.mouseInside()){
+    bChart.mousePressed();
+    for (Bar b: bChart.highlightedBars){
+      scatter.addHighlightFromOrig(b.origX, b.origY);
+      lChart.addHighlightFromOrig(b.origX, b.origY);
+      PCP.addHighlightFromOriginal(b.origY);
+    }
+  }
+  if (lChart.mouseInside()){
+    lChart.mousePressed();
+    for (Point p: lChart.highlightedPoints){
+      bChart.addHighlightFromOrig(p.origX, p.origY);
+      scatter.addHighlightFromOrig(p.origX, p.origY);
+      PCP.addHighlightFromOriginal(p.origY);
+    }
+  }
+  if (scatter.mouseInside()){
+    scatter.mousePressed();
+    for (Point p: scatter.highlightedPoints){
+      bChart.addHighlightFromOrig(p.origX, p.origY);
+      lChart.addHighlightFromOrig(p.origX, p.origY);
+      PCP.addHighlightFromOriginal(p.origY);
+    }
+  }
+
   
 }
 

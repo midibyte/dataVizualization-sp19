@@ -9,6 +9,9 @@ class ParallelCoordinatesPlot extends Frame{
   int sortCol = 0;
   ArrayList<Line> highlightedLines = new ArrayList<Line>();
   
+  ArrayList<Point> highlightedPoints = new ArrayList<Point>();
+  void clearHighlight() { highlightedPoints.clear(); highlightedLines.clear(); }
+  
   ParallelCoordinatesPlot(Table _data){
    
     data = _data;
@@ -36,7 +39,7 @@ class ParallelCoordinatesPlot extends Frame{
       if (l.mouseInside() ) {
         
         
-        if(highlightedLines.contains(l)) highlightedLines.remove(l);
+        if(highlightedLines.contains(l)) ;
         else highlightedLines.add(l);
       }
       
@@ -158,7 +161,7 @@ class ParallelCoordinatesPlot extends Frame{
           y = map( data.getFloatColumn(i)[j], min(data.getFloatColumn(i)), max(data.getFloatColumn(i)), v0 + h, v0 );
           x = u0 + (spacing * w * i);
           
-          temp.addPt(x, y);
+          temp.addPt(x, y, data.getFloatColumn(i)[j]);
           
           lines.add(temp);
         }
@@ -172,7 +175,7 @@ class ParallelCoordinatesPlot extends Frame{
           y = map( data.getFloatColumn(i)[j], min(data.getFloatColumn(i)), max(data.getFloatColumn(i)), v0 + h, v0 );
           x = u0 + (spacing * w * i);
           
-          temp.addPt(x, y);
+          temp.addPt(x, y, data.getFloatColumn(i)[j]);
           
           //lines.add(temp);
         }
@@ -181,5 +184,10 @@ class ParallelCoordinatesPlot extends Frame{
       
     }
   loop();
+  }
+  void addHighlightFromOriginal(float y){
+    if (lines != null) for (Line l: lines){
+      if(l.origYVals.contains(y)) highlightedLines.add(l);
+    }
   }
 }
