@@ -4,6 +4,8 @@ public class Bar{
   int clickBuffer = 2;
   float origX, origY;
   
+  void setColor(color _barColor){ barColor = _barColor; }
+  
   Bar(float _x, float _y, float _w, float _h){
    
     x = _x;
@@ -34,7 +36,7 @@ public class Bar{
   }
   
   void printBar(){
-    println(String.format("bar x, y, w, h: %f, %f, %f, %f" , x, y, w, h) ); 
+    //println(String.format("bar x, y, w, h: %f, %f, %f, %f" , x, y, w, h) ); 
   }
   
   boolean mouseInside(){
@@ -50,7 +52,7 @@ public class Bar{
   }
   void draw(){
     rectMode(CORNER);
-    fill(0);
+    fill(120);
     stroke(0);
     rect(x, y, w, h);
     

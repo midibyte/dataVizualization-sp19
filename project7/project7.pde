@@ -33,6 +33,7 @@ Barchart bChart = null;
 Linechart lChart = null;
 Splom splom = null;
 Histogram hist, hist1, hist2, hist3 = null;
+Corrgram corr = null;
 
 Table histData = null;
 
@@ -90,15 +91,15 @@ void fileSelected(File selection) {
     title.setPosition( 0, 0, width, titleHeight );
   
     //chart title
-    subtitle = new Text("Click in splom to change views, click on points to highlight across views, press c to clear selection", 0);
+    subtitle = new Text("Click in splom to change views, click on points to highlight, press c to clear selection", 0);
     subtitle.setPosition( 0, titleHeight/3, width, titleHeight/2 );
     
     //setup PCP
-    PCP = new ParallelCoordinatesPlot(myTable);
-    // 2/5 width, 1/2 height
-    PCP.setPosition( 0 + 50, titleHeight, plotW * 2 - 50, plotH/ 2 );
-    PCP.setupAxes();
-    PCP.setupLines();
+    //PCP = new ParallelCoordinatesPlot(myTable);
+    //// 2/5 width, 1/2 height
+    //PCP.setPosition( 0 + 50, titleHeight, plotW * 2 - 50, plotH/ 2 );
+    //PCP.setupAxes();
+    //PCP.setupLines();
     
 
     //setup scatter plot
@@ -142,10 +143,9 @@ void fileSelected(File selection) {
     hist3.setPosition( 0 + plotW/2, titleHeight +plotH/2 + plotH/4 + spacingY/2, plotW/2 - 10, ((plotH/2 )- spacingY*2) /2 -6 );
     hist3.setupBars();
     
-    
-    //histData = hist.getTable();
-    
-    //histData.print();
+    corr = new Corrgram(myTable);
+    corr.setPosition( 0, titleHeight, plotW * 2 , plotH/ 2 );
+    corr.setupBoxes();
     
     //    //setup barchart   
     //bChart = new Barchart( histData  ,  histData.getColumnTitles()[1], histData.getColumnTitles()[0]);
@@ -196,8 +196,8 @@ void draw(){
   }
 
 
-  if ( PCP != null ){
-    PCP.draw();
+  if ( corr != null ){
+    corr.draw();
   }
 
   if ( hist != null ){
@@ -219,8 +219,8 @@ void draw(){
 void clearAll(){
   scatter.clearHighlight();
   lChart.clearHighlight();
-  PCP.clearHighlight();
-  bChart.clearHighlight();
+  //PCP.clearHighlight();
+  //bChart.clearHighlight();
 }
 
 void keyPressed(){
@@ -260,12 +260,12 @@ void mousePressed(){
         println("clicked inside: " + count);
         
 
-        //setup barchart   
-        bChart = new Barchart( myTable, p.useX, p.useY );
-        //bChart.setPosition( plotW * 4, titleHeight, plotW, plotH/2);
-        bChart.setPosition( 0, titleHeight + plotH/2 + spacingY, plotW, (plotH/2 )- spacingY*2);
-        bChart.setupPointList(); 
-        bChart.setupBars();
+        ////setup barchart   
+        //bChart = new Barchart( myTable, p.useX, p.useY );
+        ////bChart.setPosition( plotW * 4, titleHeight, plotW, plotH/2);
+        //bChart.setPosition( 0, titleHeight + plotH/2 + spacingY, plotW, (plotH/2 )- spacingY*2);
+        //bChart.setupPointList(); 
+        //bChart.setupBars();
         
         
         
@@ -281,39 +281,39 @@ void mousePressed(){
     }
   }
   
-  if(PCP.mouseInside()){
-    PCP.mousePressed();
-    for(Line l: PCP.highlightedLines){
-      for (Float f: l.origYVals){
-        scatter.addHighlightFromOrig(f);
-        lChart.addHighlightFromOrig(f);
-        bChart.addHighlightFromOrig(f);
-      }
-    }
-  }
+  //if(PCP.mouseInside()){
+  //  PCP.mousePressed();
+  //  for(Line l: PCP.highlightedLines){
+  //    for (Float f: l.origYVals){
+  //      scatter.addHighlightFromOrig(f);
+  //      lChart.addHighlightFromOrig(f);
+  //      bChart.addHighlightFromOrig(f);
+  //    }
+  //  }
+  //}
   
-  if (bChart.mouseInside()){
-    bChart.mousePressed();
-    for (Bar b: bChart.highlightedBars){
-      scatter.addHighlightFromOrig(b.origX, b.origY);
-      lChart.addHighlightFromOrig(b.origX, b.origY);
-      PCP.addHighlightFromOriginal(b.origY);
-    }
-  }
+  //if (bChart.mouseInside()){
+  //  bChart.mousePressed();
+  //  for (Bar b: bChart.highlightedBars){
+  //    scatter.addHighlightFromOrig(b.origX, b.origY);
+  //    lChart.addHighlightFromOrig(b.origX, b.origY);
+  //    PCP.addHighlightFromOriginal(b.origY);
+  //  }
+  //}
   if (lChart.mouseInside()){
     lChart.mousePressed();
     for (Point p: lChart.highlightedPoints){
-      bChart.addHighlightFromOrig(p.origX, p.origY);
+      //bChart.addHighlightFromOrig(p.origX, p.origY);
       scatter.addHighlightFromOrig(p.origX, p.origY);
-      PCP.addHighlightFromOriginal(p.origY);
+      //PCP.addHighlightFromOriginal(p.origY);
     }
   }
   if (scatter.mouseInside()){
     scatter.mousePressed();
     for (Point p: scatter.highlightedPoints){
-      bChart.addHighlightFromOrig(p.origX, p.origY);
+      //bChart.addHighlightFromOrig(p.origX, p.origY);
       lChart.addHighlightFromOrig(p.origX, p.origY);
-      PCP.addHighlightFromOriginal(p.origY);
+      //PCP.addHighlightFromOriginal(p.origY);
     }
   }
 

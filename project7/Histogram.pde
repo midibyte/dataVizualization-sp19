@@ -42,10 +42,10 @@ class Histogram extends Frame{
       
     }
     
-    for (int i = 0; i < bins; ++i){
-      println(String.format( "up to %f count: %f", displayNumbers[i], count[i] ) ); 
-      println(String.format( "max %d min %d data length %d number of bins %d", max, min,colData.length, bins) );
-    }
+    //for (int i = 0; i < bins; ++i){
+    //  println(String.format( "up to %f count: %f", displayNumbers[i], count[i] ) ); 
+    //  println(String.format( "max %d min %d data length %d number of bins %d", max, min,colData.length, bins) );
+    //}
     
     histData = new Table();
     
@@ -61,7 +61,7 @@ class Histogram extends Frame{
      // newRow.setFloat("bin", 0);
      // newRow.setFloat("count", 0);
     
-    histData.print();
+    //histData.print();
     
     xAxis = new Axis(histData, useCol);
     yAxis = new Axis(histData, "count");
