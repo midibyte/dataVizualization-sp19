@@ -33,6 +33,10 @@ public class Bar{
     
   }
   
+  void printBar(){
+    println(String.format("bar x, y, w, h: %f, %f, %f, %f" , x, y, w, h) ); 
+  }
+  
   boolean mouseInside(){
      return (x -clickBuffer < mouseX) && (x +w+clickBuffer)>mouseX && (y -clickBuffer)< mouseY && (y+h+clickBuffer)>mouseY; 
   }
@@ -46,10 +50,25 @@ public class Bar{
   }
   void draw(){
     rectMode(CORNER);
-    fill(100);
+    fill(0);
     stroke(0);
     rect(x, y, w, h);
-
+    
+    pushMatrix();
+    translate(x + w/2, y + h/2);
+    rotate(PI/2);
+    textSize(w - (w/5));
+    String temp = String.format("%.0f", origY);
+    
+    fill(0);
+    text(temp, -1,0);
+    text(temp, 1,0);
+    text(temp, 0,-1);
+    text(temp, 0,1);
+    fill(255);
+    text(temp, 0,0);
+    
+    popMatrix();
   }
   
 }

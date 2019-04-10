@@ -5,6 +5,7 @@ class Axis extends Frame {
   float[] numbers;
   float max, min;
   float rotateAmount = 0; //default rotate to x axis
+  boolean title = true;
   
   Axis ( Table _data, String _useColumn ) {
      data = _data;
@@ -19,16 +20,18 @@ class Axis extends Frame {
      println(max);
   }
   
+  void noTitle() {title = false;}
+  
   void draw() {
 
-    if ( rotateAmount == 0 ) { 
+    if ( rotateAmount == 0 && title) { 
       drawAxisTitleX(); 
       //drawLabelsX(); 
     }
     
     else {
       //drawDistributed();
-      drawAxisTitle();
+      if (title) drawAxisTitle();
     }
   }
   
@@ -231,7 +234,7 @@ class Axis extends Frame {
       
       displayNum = lerp(min, max, ( (float)i/count ) );
       
-      String text = String.format("%.2f", displayNum);
+      String text = String.format("%.0f", displayNum);
       text( text, xPos, v0 + h/4 );
       
       line( xPos, v0 + h/6, xPos, v0);
@@ -242,6 +245,58 @@ class Axis extends Frame {
       
     }
     
+  }
+  
+  //draw count numbers along the x axis from min to max
+  void drawDistributedXVertical(int count) {
+    //adjust count so that the correct number of markings will show
+    count -= 1;
+    //center of text box is the point given
+    pushMatrix();
+    translate(u0, v0);
+    rotate(-PI/2);
+    rectMode( CENTER );
+    textAlign( CENTER, CENTER );
+    textSize(h/4);
+    
+    
+    float interval = w / count;
+    float xPos = 0;  //set starting  x coord
+    float displayNum1, displayNum2;
+    //float prev = min;
+    for (int i = 0; i <= count; i++ ){
+     
+      //if (i == 0) {
+      //  textAlign(LEFT, CENTER); 
+      //}
+      //else if (i == count) {
+      //  textAlign(RIGHT, CENTER); 
+      //}
+      //else {
+      //  textAlign( CENTER, CENTER );
+      //}
+      
+      displayNum1 = lerp(min, max, ( (float)i/count ) );
+      displayNum2 = lerp(min, max, ( (float)(i+1)/count ) );
+      String text = String.format("- %.1f ", displayNum1);
+      
+      //prev = displayNum;
+      fill(255);
+      text( text, 1, xPos );
+      text( text, -1, xPos );
+      text( text, 0, xPos -1 );
+      text( text, 0, xPos + 1);
+      fill(0);
+      text( text, 0, xPos );
+      
+      //line( xPos, v0 + h/6, xPos, v0);
+      
+      //update xPos
+      xPos += interval;
+      
+      
+    }
+    popMatrix();
   }
   
     //draw count numbers along the x axis from min to max

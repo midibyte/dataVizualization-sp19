@@ -32,7 +32,7 @@ ParallelCoordinatesPlot PCP = null;
 Barchart bChart = null;
 Linechart lChart = null;
 Splom splom = null;
-Histogram hist = null;
+Histogram hist, hist1, hist2, hist3 = null;
 
 Table histData = null;
 
@@ -129,23 +129,32 @@ void fileSelected(File selection) {
     splom.setupSplom(20);
     
     
-    hist = new Histogram(yCol , myTable);
-    //hist.setPosition( 0, titleHeight + plotH/2 + spacingY, plotW, (plotH/2 )- spacingY*2);
-    //hist.makeBarChart();
-    //hist.highlightFrame();
+    hist = new Histogram(myTable.getColumnTitles()[0] , myTable);
+    hist.setPosition( 0, titleHeight + plotH/2 + spacingY, plotW/2 - 12, ((plotH/2 )- spacingY*3) /2 );
+    hist.setupBars();
+    hist1 = new Histogram(myTable.getColumnTitles()[1]  , myTable);
+    hist1.setPosition( 0 + plotW/2, titleHeight + plotH/2 + spacingY, plotW/2, ((plotH/2 )- spacingY*3) /2 );
+    hist1.setupBars();
+    hist2 = new Histogram(myTable.getColumnTitles()[2]  , myTable);
+    hist2.setPosition( 0, titleHeight +plotH/2 + plotH/4 + spacingY/2, plotW/2 - 12, ((plotH/2 )- spacingY*2) /2 - 6 );
+    hist2.setupBars();
+    hist3 = new Histogram(myTable.getColumnTitles()[3]  , myTable);
+    hist3.setPosition( 0 + plotW/2, titleHeight +plotH/2 + plotH/4 + spacingY/2, plotW/2 - 10, ((plotH/2 )- spacingY*2) /2 -6 );
+    hist3.setupBars();
     
-    histData = hist.getTable();
     
-    histData.print();
+    //histData = hist.getTable();
     
-        //setup barchart   
-    bChart = new Barchart( histData  ,  histData.getColumnTitles()[1], histData.getColumnTitles()[0]);
-    //bChart = new Barchart( myTable, xCol, yCol);
-    //bChart.setPosition( plotW * 4, titleHeight, plotW, plotH/2);
-    bChart.setPosition( 0, titleHeight + plotH/2 + spacingY, plotW, (plotH/2 )- spacingY*2);
-    bChart.setupPointList(); 
-    bChart.setupBars();
-    bChart.highlightFrame();
+    //histData.print();
+    
+    //    //setup barchart   
+    //bChart = new Barchart( histData  ,  histData.getColumnTitles()[1], histData.getColumnTitles()[0]);
+    ////bChart = new Barchart( myTable, xCol, yCol);
+    ////bChart.setPosition( plotW * 4, titleHeight, plotW, plotH/2);
+    //bChart.setPosition( 0, titleHeight + plotH/2 + spacingY, plotW, (plotH/2 )- spacingY*2);
+    //bChart.setupPointList(); 
+    //bChart.setupBars();
+    //bChart.highlightFrame();
     
   }
   
@@ -191,8 +200,11 @@ void draw(){
     PCP.draw();
   }
 
-  if ( bChart != null ){
-    bChart.draw();
+  if ( hist != null ){
+    hist.draw();
+    hist1.draw();
+    hist2.draw();
+    hist3.draw();
   }
 
   if ( lChart != null ){
